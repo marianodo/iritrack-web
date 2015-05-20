@@ -1,0 +1,61 @@
+%include('base.html')
+
+        <div class="panel panel-default">
+ 
+          <div class="panel-heading"><b>Upload File of Stage</b></div>
+          <div class="panel-body">
+           <form enctype="multipart/form-data" action="/starttimes/upload" method="post">
+            <p><input type="file" name="starttimes"></p>
+            <input type="submit" value="Upload">
+            <label for="name">Add time in minutes
+              <input size="1" name="addtime" type="text" value="0">
+            </label>
+            <label for="name">Stage Id
+              <input size="1" name="stage_id" type="text" value="1">
+            </label>
+            </form>
+          </div>
+ 
+% if flagFile:
+    <table class="table table-hover" align="center">
+    <thead align="center">  
+
+    <tr>
+       <form action="/starttimes/show" method="post">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Stage Id Nº:
+                <input name="stage" type="text" size="1"  value="{{stage}}">
+                <input type="submit" value="Search"></strong><div style="text-align:right;"><b>Stage {{stage}} from {{count}} </b></div>
+              </div>
+              </div>
+            
+        </form>
+        
+    </tr>
+    </thead>
+      <tbody align="center">
+    <tr>
+        <td><b>Driver_id</b></d>
+        <td width="30%"><b>Name</b></td>
+        <td><b>StartTime</b></td>
+        
+    </tr>
+   
+    % for item in rows:
+    <tr>
+        <td align="center">{{item.driver_group}}</td>
+        <td align="center">{{item.name}}</td>
+        <td align="center">{{item.start_time}}</td>
+        <td align="center"><a href="/starttimes/editar/{{stage}}/{{item.driver_group}}">Edit</a>
+    
+    </tr>
+    % end
+    
+</table>
+</div>
+    <a href="/starttimes/deletall">Delete All drivers</a>
+%else:
+
+<h3>Archivo incorrecto. Verifique</h3>
+
+%end

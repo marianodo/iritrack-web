@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>titulo</title> 
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+ 
+<script type="text/javascript">
+//<![CDATA[
+function establecer(opcion){
+var seleccion = document.getElementById(opcion).checked;
+if(seleccion == false){
+document.getElementById(opcion).checked = true;
+}else{
+document.getElementById(opcion).checked = false;
+}
+}
+//]]>
+</script>
+</head>
+<body>
+<form action="#">
+<p>Colores</p>
+<p>
+<label><input value="rojo" name="color" type="radio" onclick="establecer('manzana');"> Rojo</label> 
+<label><input value="verde" name="color" type="radio" onclick="establecer('sandia');"> Verde</label>
+</p>
+<p>Frutas</p>
+<p>
+<label><input value="manzana" name="fruta" id="manzana" type="radio">Manzana</label>
+<label><input value="2" name="fruta" id="sandia" type="radio">Sandia</label>
+</p>
+</form>
+</body>
+</html>
