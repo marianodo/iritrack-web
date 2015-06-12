@@ -74,14 +74,8 @@ def index(db,stage_id):
                     tiemporsultado.append(date_zone)
                     zonaresultado.append(result[1])
             
-                    
-                    
-    
     count = db.query(Stage.stage_id).distinct().count()    
-    #return template('data.tpl', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timename = vector_timezone,timeresult=tiemporsultado,startime=vector_time, stage_id=1)
-
     return template('result.html', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timeresult=tiemporsultado,startime=vector_time, stage_id=stage_id,count=count)
-    #return "o
     
 
 @app.route('/resultado/show', method='POST')
@@ -120,15 +114,15 @@ def searchData(db):
     db.commit()
 
     dataFetch(fecha_desde,fecha_hasta).firstnewFetch(firstdriver.driver_group)
-    redirect('/resultado/1')
+    redirect('/resultado/%s'% stage_id)
     
 @app.route('/result/deletall')
 def deleteall(db):
     db.query(Data).delete()
     redirect('/resultado/1')
 
-@app.post('/resultado/update')
-@app.route('/resultado/update/<stage_id>/<state>')
-def updateData(db):   
+@app.post('/resultado/update/<stage_id>')
+@app.route('/resultado/update/<stage_id>')
+def updateData(db,stage_id):   
     dataFetch("a","b").updateAll()  
-    redirect('/resultado/1')
+    redirect('/resultado/%s'% stage_id)
