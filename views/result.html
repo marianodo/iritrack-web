@@ -104,7 +104,7 @@ function mostrarFormulario(id)
         <div class="panel-body">
             
             <span>
-            <form action="/resultado/update" method="post" style="display:inline">
+            <form action="/resultado/update/{{stage_id}}" method="post" style="display:inline">
                 <i><input type="submit" value="Update Now" onclick="mostrarFormulario('capa2')"></i> 
             </form>
             <form name="form1" onsubmit="return redireccionar()">

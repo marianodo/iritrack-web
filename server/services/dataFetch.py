@@ -114,7 +114,7 @@ class dataFetch(object):
         connection = self.login()
         for driver in session.query(StartTime).all():
             
-            self.updateDriver(connection, driver.driver_group)
+            self.updateDriver(driver.driver_group)
             #self.show(driver.driver_id)
             
 
@@ -132,7 +132,6 @@ class dataFetch(object):
             xlsFileObject = self.downloadXls(connection,fecha_desde_unix,fecha_hasta_unix,vehiculo)
             rows = self.parseXls(xlsFileObject)
             session.query(Data).filter(Data.vehicle == vehiculo).delete()
-            print "borre"
             self.insertRows(rows, vehiculo)        
         except:
             pass
