@@ -122,37 +122,20 @@ class dataFetch(object):
     def updateDriver(self, driver_id):
         connection = self.login()
         vehiculo = driver_id
-        #ultima_fecha = session.query(func.max(Data.date)).filter_by(vehicle=vehiculo).first()
         
-        # if ultima_fecha[0] is not None:
-        #     fecha_desde = datetime.strptime(ultima_fecha[0], '%Y-%m-%d %H:%M:%S')
-        #     fecha_desde = fecha_desde - timedelta(hours=3)
-        #     fecha_desde = fecha_desde + timedelta(seconds=1) #LE SUMO UN SEGUNDO PARA QUE BUSQUE UN SEGUNDO DPS DEL ULTIMO DATO
-        #     fecha_hasta = fecha_desde + timedelta(hours=5)
-        #     fecha_desde_unix = mktime(fecha_desde.timetuple())
-        #     fecha_hasta_unix = mktime(fecha_hasta.timetuple())
-        #     try:
-                
-        #         xlsFileObject = self.downloadXls(connection,fecha_desde_unix,fecha_hasta_unix,vehiculo)
-        #         rows = self.parseXls(xlsFileObject)
-        #         self.insertRows(rows, vehiculo)
-        #     except:
-        #         pass
-        # else:
-            
         fechas = []
         fechas=self.FechaUpdate() #Si no tiene nada en la BD, busca en internet con la fecha de hoy desde las 0 hs hasta la hora actual
         
         fecha_desde_unix= fechas[0]
         fecha_hasta_unix=fechas[1]
-        #try:
-        xlsFileObject = self.downloadXls(connection,fecha_desde_unix,fecha_hasta_unix,vehiculo)
-        rows = self.parseXls(xlsFileObject)
-        session.query(Data).filter(Data.vehicle == vehiculo).delete()
-        print "borre"
-        self.insertRows(rows, vehiculo)        
-        #except:
-            #pass
+        try:
+            xlsFileObject = self.downloadXls(connection,fecha_desde_unix,fecha_hasta_unix,vehiculo)
+            rows = self.parseXls(xlsFileObject)
+            session.query(Data).filter(Data.vehicle == vehiculo).delete()
+            print "borre"
+            self.insertRows(rows, vehiculo)        
+        except:
+            pass
         return True
 
     def FechaUpdate(self):

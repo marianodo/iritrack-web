@@ -4,14 +4,6 @@
         %namezone.append(i)
     %end
 
-    %lastzona = []
-    %for i in zonalast:
-        %lastzona.append(i)
-    %end
-    %lasttimezona = []
-    %for i in tiempolast:
-        %lasttimezona.append(i)
-    %end
     
     %resulttime = []
     %for i in timeresult:
@@ -40,7 +32,7 @@
     <style>
 
     .header-fixed {
-    width: 100% 
+    width: 60% 
 }
 
 .header-fixed > thead,
@@ -85,7 +77,7 @@
 
                                 if (document.getElementById("acepto").checked)
                                 {
-                                    location.href='/resultado/update/{{stage_id}}/True';
+                                    location.href='/resultado/update';
                                 }
 
                              }, "600000");
@@ -110,11 +102,9 @@ function mostrarFormulario(id)
 
       <div class="panel-heading"><b>Result from Drivers</b></div>
         <div class="panel-body">
-            %if flagloop == "update":
-            <div align="center"><i>Complete: {{searching}}%</i></div>
-            %end
+            
             <span>
-            <form action="/resultado/update/{{stage_id}}/True" method="post" style="display:inline">
+            <form action="/resultado/update" method="post" style="display:inline">
                 <i><input type="submit" value="Update Now" onclick="mostrarFormulario('capa2')"></i> 
             </form>
             <form name="form1" onsubmit="return redireccionar()">
@@ -143,7 +133,7 @@ function mostrarFormulario(id)
             <th><b> Vehicle</b> </th>
             <th><b>Start Time</b></th>
             %for j in zonename:
-                <th colspan="4"><b> Stage {{j}}</b></th>
+                <th colspan="2"><b> Stage {{j}}</b></th>
             %end
         </tr>
 
@@ -151,10 +141,8 @@ function mostrarFormulario(id)
             <th>#</th>
             <th>#</th>
             %for a in range(len(namezone)):
-                <th>Arrive1</th>
-                <th>Dif1</th>
-                <th>Arrive2</th>
-                <th>Dif2</th>
+                <th>Arrive</th>
+                <th>Diff</th>
             %end
         </tr>
         </thead>
@@ -170,14 +158,11 @@ function mostrarFormulario(id)
                         
                         <td class="danger">{{resulttime[t]}}</td>
                         <td class="danger">{{resultzone[t]}}</td>
-                        <td class="danger">{{lasttimezona[t]}}</td>
-                        <td class="danger">{{lastzona[t]}}</td>
+                       
                     %else:
             
                         <td class="success">{{resulttime[t]}}</p></td>
                         <td class="success">{{resultzone[t]}}</p></td>
-                        <td class="info">{{lasttimezona[t]}}</p></td>
-                        <td class="info">{{lastzona[t]}}</p></td>
 
                     % end
                 %end
@@ -188,15 +173,6 @@ function mostrarFormulario(id)
     </table>
 
     <a href="/result/deletall">Delete All Data</a>
-    %if flagloop == 'date':
-        <script type="text/javascript">
-    window.location="/resultado/loop";
-    </script>
-    %end
-    %if flagloop == 'update':
-        <script type="text/javascript">
-    window.location="/resultado/update/{{stage_id}}/False";
-    </script>
-    %end
+    
 </body>
 </html>
