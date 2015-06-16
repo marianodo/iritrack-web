@@ -29,10 +29,12 @@
 %include('base2.html')
 <html>
 <head>
+    <script src="/static/js/jquery-1.9.1.min.js"></script>
     <style type="text/css">
  body{
   font:1.2em normal Arial,sans-serif;
   color:#34495E;
+  padding-top: 70px;
 }
 
 h1{
@@ -51,6 +53,7 @@ h1{
 table{
   border-collapse:collapse;
   width:100%;
+
 }
 
 .blue{
@@ -71,6 +74,7 @@ table{
 
 thead{
   color:white;
+
 }
 
 th,td{
@@ -88,7 +92,7 @@ background:#BDC3C7;
 }
 
 .fixed{
-  top:0;
+  top:50;
   position:fixed;
   width:auto;
   display:none;
@@ -103,6 +107,43 @@ background:#BDC3C7;
   cursor:pointer;
 }
     </style>
+    <script type="text/javascript">
+            ;(function($) {
+   $.fn.fixMe = function() {
+      return this.each(function() {
+         var $this = $(this),
+            $t_fixed;
+         function init() {
+            $this.wrap('<div class="container" />');
+            $t_fixed = $this.clone();
+            $t_fixed.find("tbody").remove().end().addClass("fixed").insertBefore($this);
+            resizeFixed();
+         }
+         function resizeFixed() {
+            $t_fixed.find("th").each(function(index) {
+               $(this).css("width",$this.find("th").eq(index).outerWidth()+"px");
+            });
+         }
+         function scrollFixed() {
+            var offset = $(this).scrollTop(),
+            tableOffsetTop = $this.offset().top,
+            tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
+            if(offset < tableOffsetTop || offset > tableOffsetBottom)
+               $t_fixed.hide();
+            else if(offset >= tableOffsetTop && offset <= tableOffsetBottom && $t_fixed.is(":hidden"))
+               $t_fixed.show();
+         }
+         $(window).resize(resizeFixed);
+         $(window).scroll(scrollFixed);
+         init();
+      });
+   };
+})(jQuery);
+
+$(document).ready(function(){
+   $("table").fixMe();
+});
+    </script>
     <script language="Javascript">  
         function mostrar(nombreCapa){  
         document.getElementById(nombreCapa).style.visibility="visible";  
@@ -166,8 +207,7 @@ function mostrarFormulario(id)
                     </div>
                 </form>     
             </span>   
-             
-           <h1>&darr; SCROLL &darr;</h1>
+          
             <table class="blue table-bordered">
            
            <thead>         
@@ -214,49 +254,6 @@ function mostrarFormulario(id)
             </tr>
         </tbody>
     </table>
-    <h1 class="up scrollMore">&uarr; UP &uarr;</h1>
-    <script type="text/javascript">
-            ;(function($) {
-   $.fn.fixMe = function() {
-      return this.each(function() {
-         var $this = $(this),
-            $t_fixed;
-         function init() {
-            $this.wrap('<div class="container" />');
-            $t_fixed = $this.clone();
-            $t_fixed.find("tbody").remove().end().addClass("fixed").insertBefore($this);
-            resizeFixed();
-         }
-         function resizeFixed() {
-            $t_fixed.find("th").each(function(index) {
-               $(this).css("width",$this.find("th").eq(index).outerWidth()+"px");
-            });
-         }
-         function scrollFixed() {
-            var offset = $(this).scrollTop(),
-            tableOffsetTop = $this.offset().top,
-            tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
-            if(offset < tableOffsetTop || offset > tableOffsetBottom)
-               $t_fixed.hide();
-            else if(offset >= tableOffsetTop && offset <= tableOffsetBottom && $t_fixed.is(":hidden"))
-               $t_fixed.show();
-         }
-         $(window).resize(resizeFixed);
-         $(window).scroll(scrollFixed);
-         init();
-      });
-   };
-})(jQuery);
-
-$(document).ready(function(){
-   $("table").fixMe();
-   $(".up").click(function() {
-      $('html, body').animate({
-      scrollTop: 0
-   }, 2000);
- });
-});
-    </script>
     <a href="/result/deletall">Delete All Data</a>
     
 </body>
