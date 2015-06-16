@@ -29,38 +29,78 @@
 %include('base2.html')
 <html>
 <head>
-    <style>
-
-    .header-fixed {
-    width: 60% 
+    <style type="text/css">
+ body{
+  font:1.2em normal Arial,sans-serif;
+  color:#34495E;
 }
 
-.header-fixed > thead,
-.header-fixed > tbody,
-.header-fixed > thead > tr,
-.header-fixed > tbody > tr,
-.header-fixed > thead > tr > th,
-.header-fixed > tbody > tr > td {
-    display: block;
+h1{
+  text-align:center;
+  text-transform:uppercase;
+  letter-spacing:-2px;
+  font-size:2.5em;
+  margin:20px 0;
 }
 
-.header-fixed > tbody > tr:after,
-.header-fixed > thead > tr:after {
-    content: ' ';
-    display: block;
-    visibility: hidden;
-    clear: both;
+.container{
+  width:90%;
+  margin:auto;
 }
 
-.header-fixed > tbody {
-    overflow-y: auto;
-    height: 150px;
+table{
+  border-collapse:collapse;
+  width:100%;
 }
 
-.header-fixed > tbody > tr > td,
-.header-fixed > thead > tr > th {
-    width: 20%;
-    float: left;
+.blue{
+  border:2px solid #1ABC9C;
+}
+
+.blue thead{
+  background:#1ABC9C;
+}
+
+.purple{
+  border:2px solid #9B59B6;
+}
+
+.purple thead{
+  background:#9B59B6;
+}
+
+thead{
+  color:white;
+}
+
+th,td{
+  text-align:center;
+  padding:5px 0;
+}
+
+tbody tr:nth-child(even){
+  background:#ECF0F1;
+}
+
+tbody tr:hover{
+background:#BDC3C7;
+  color:#FFFFFF;
+}
+
+.fixed{
+  top:0;
+  position:fixed;
+  width:auto;
+  display:none;
+  border:none;
+}
+
+.scrollMore{
+  margin-top:600px;
+}
+
+.up{
+  cursor:pointer;
 }
     </style>
     <script language="Javascript">  
@@ -127,42 +167,45 @@ function mostrarFormulario(id)
                 </form>     
             </span>   
              
-           <table class="table table-hover table-bordered table-condensed" align="center"> 
-           <thead align="center">         
+           <h1>&darr; SCROLL &darr;</h1>
+            <table class="blue table-bordered">
+           
+           <thead>         
         <tr>
-            <th><b> Vehicle</b> </th>
-            <th><b>Start Time</b></th>
+            <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Vehicle</b> </th>
+            <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b>Start Time</b></th>
             %for j in zonename:
-                <th colspan="2"><b> Stage {{j}}</b></th>
+                <th bgcolor="#585858" colspan="2"><FONT COLOR=WHITE SIZE=2><center><b> Stage {{j}}</b></th>
             %end
         </tr>
 
         <tr>
-            <th>#</th>
-            <th>#</th>
+            <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1>#</th>
+            <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1>#</th>
             %for a in range(len(namezone)):
-                <th>Arrive</th>
-                <th>Diff</th>
+                <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1><center>Arrive</th>
+                <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1><center>Diff</th>
             %end
         </tr>
         </thead>
+        
         <tbody align="center"> 
         %for q in range(len(vehicle)):
             <tr>
 
-                <td>{{vehicle[q]}}</p></td>
-                <td>{{starttime[q]}}</p></td>
+                <td><FONT SIZE=1><center>{{vehicle[q]}}</p></td>
+                <td><FONT SIZE=1><center>{{starttime[q]}}</p></td>
                 %for k in range(len(namezone)):
                     % t = (q*len(namezone))+ k
                     %if resulttime[t] == ' ':
                         
-                        <td class="danger">{{resulttime[t]}}</td>
-                        <td class="danger">{{resultzone[t]}}</td>
+                        <td class="danger"><FONT SIZE=1><center>{{resulttime[t]}}</td>
+                        <td class="danger"><FONT SIZE=1><center>{{resultzone[t]}}</td>
                        
                     %else:
             
-                        <td class="success">{{resulttime[t]}}</p></td>
-                        <td class="success">{{resultzone[t]}}</p></td>
+                        <td class="success"><FONT SIZE=1><center>{{resulttime[t]}}</p></td>
+                        <td class="success"><FONT SIZE=1><center>{{resultzone[t]}}</p></td>
 
                     % end
                 %end
@@ -171,7 +214,49 @@ function mostrarFormulario(id)
             </tr>
         </tbody>
     </table>
+    <h1 class="up scrollMore">&uarr; UP &uarr;</h1>
+    <script type="text/javascript">
+            ;(function($) {
+   $.fn.fixMe = function() {
+      return this.each(function() {
+         var $this = $(this),
+            $t_fixed;
+         function init() {
+            $this.wrap('<div class="container" />');
+            $t_fixed = $this.clone();
+            $t_fixed.find("tbody").remove().end().addClass("fixed").insertBefore($this);
+            resizeFixed();
+         }
+         function resizeFixed() {
+            $t_fixed.find("th").each(function(index) {
+               $(this).css("width",$this.find("th").eq(index).outerWidth()+"px");
+            });
+         }
+         function scrollFixed() {
+            var offset = $(this).scrollTop(),
+            tableOffsetTop = $this.offset().top,
+            tableOffsetBottom = tableOffsetTop + $this.height() - $this.find("thead").height();
+            if(offset < tableOffsetTop || offset > tableOffsetBottom)
+               $t_fixed.hide();
+            else if(offset >= tableOffsetTop && offset <= tableOffsetBottom && $t_fixed.is(":hidden"))
+               $t_fixed.show();
+         }
+         $(window).resize(resizeFixed);
+         $(window).scroll(scrollFixed);
+         init();
+      });
+   };
+})(jQuery);
 
+$(document).ready(function(){
+   $("table").fixMe();
+   $(".up").click(function() {
+      $('html, body').animate({
+      scrollTop: 0
+   }, 2000);
+ });
+});
+    </script>
     <a href="/result/deletall">Delete All Data</a>
     
 </body>
