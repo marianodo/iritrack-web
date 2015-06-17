@@ -33,6 +33,11 @@
     <link rel="stylesheet" href="/static/css/resultTable.css">
     <script src="/static/js/resultTable.js"></script>
 
+    <script> 
+        function abrir(url) { 
+        open(url,'','top=300,left=300,width=400,height=300') ; 
+        } 
+    </script> 
     <script language="Javascript">  
         function mostrar(nombreCapa){  
         document.getElementById(nombreCapa).style.visibility="visible";  
@@ -124,9 +129,11 @@ function mostrarFormulario(id)
         %for q in range(len(vehicle)):
             <tr>
         
-                <td><button type="button" class="btn btn-default" title="Inicio">
-                <span class="glyphicon glyphicon-pencil" style='font-size: 10px'></span>
-                </button></p></td>
+                <td><a href="javascript:abrir('/comments/{{vehicle[q]}}')">
+                    <button type="button" class="btn btn-default" title="Comments">
+                    <span class="glyphicon glyphicon-pencil" style='font-size: 10px'></span>
+                    </button></p></a>
+                </td>
                 <td><FONT SIZE=1><center>{{vehicle[q]}}</p></td>
                 <td><FONT SIZE=1><center>{{starttime[q]}}</p></td>
                 %for k in range(len(namezone)):
