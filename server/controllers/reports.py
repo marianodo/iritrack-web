@@ -46,7 +46,7 @@ def index(db,stage_id):
         vector_driver.append(driver.driver_group)
         #Agarra un alpha y pregunta por todas las zonas, sig alpha y pregunta de vuelta por todas las zonas
         vehicle_num = driver.driver_group
-        
+
         start_time_tmp = datetime.strptime(vector_start_time[i], '%H:%M:%S') #Convierto en datetime para poder restar dsp
         vector_time.append(vector_start_time[i])
 

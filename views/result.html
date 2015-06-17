@@ -31,11 +31,12 @@
 <head>
     <script src="/static/js/jquery-1.9.1.min.js"></script>
     <link rel="stylesheet" href="/static/css/resultTable.css">
+    <link rel="stylesheet" href="/static/css/elusive-icons.min.css">
     <script src="/static/js/resultTable.js"></script>
 
     <script> 
         function abrir(url) { 
-        open(url,'','top=300,left=300,width=400,height=300') ; 
+        open(url,'','top=300,left=300,width=400,height=330') ; 
         } 
     </script> 
     <script language="Javascript">  
@@ -128,12 +129,12 @@ function mostrarFormulario(id)
         <tbody align="center"> 
         %for q in range(len(vehicle)):
             <tr>
-        
-                <td><a href="javascript:abrir('/comments/{{vehicle[q]}}')">
-                    <button type="button" class="btn btn-default" title="Comments">
-                    <span class="glyphicon glyphicon-pencil" style='font-size: 10px'></span>
-                    </button></p></a>
-                </td>
+                
+                    <td><a href="javascript:abrir('/comments/{{vehicle[q]}}')">
+                        <span class="glyphicon glyphicon-pencil" style="font-size:10px"></span>
+                        </a>
+                    </td>
+                
                 <td><FONT SIZE=1><center>{{vehicle[q]}}</p></td>
                 <td><FONT SIZE=1><center>{{starttime[q]}}</p></td>
                 %for k in range(len(namezone)):
