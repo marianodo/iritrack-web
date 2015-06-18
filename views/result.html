@@ -29,40 +29,17 @@
 %include('base2.html')
 <html>
 <head>
-    <style>
+    <meta charset="utf-8"/>
+    <script src="/static/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="/static/css/resultTable.css">
+    <link rel="stylesheet" href="/static/css/elusive-icons.min.css">
+    <script src="/static/js/resultTable.js"></script>
 
-    .header-fixed {
-    width: 60% 
-}
-
-.header-fixed > thead,
-.header-fixed > tbody,
-.header-fixed > thead > tr,
-.header-fixed > tbody > tr,
-.header-fixed > thead > tr > th,
-.header-fixed > tbody > tr > td {
-    display: block;
-}
-
-.header-fixed > tbody > tr:after,
-.header-fixed > thead > tr:after {
-    content: ' ';
-    display: block;
-    visibility: hidden;
-    clear: both;
-}
-
-.header-fixed > tbody {
-    overflow-y: auto;
-    height: 150px;
-}
-
-.header-fixed > tbody > tr > td,
-.header-fixed > thead > tr > th {
-    width: 20%;
-    float: left;
-}
-    </style>
+    <script> 
+        function abrir(url) { 
+        open(url,'','top=300,left=300,width=400,height=330') ; 
+        } 
+    </script> 
     <script language="Javascript">  
         function mostrar(nombreCapa){  
         document.getElementById(nombreCapa).style.visibility="visible";  
@@ -126,43 +103,52 @@ function mostrarFormulario(id)
                     </div>
                 </form>     
             </span>   
-             
-           <table class="table table-hover table-bordered table-condensed" align="center"> 
-           <thead align="center">         
+          
+            <table class="blue table-bordered">
+           
+           <thead>         
         <tr>
-            <th><b> Vehicle</b> </th>
-            <th><b>Start Time</b></th>
+            <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Comments</b> </th>
+            <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Vehicle</b> </th>
+            <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b>Start Time</b></th>
             %for j in zonename:
-                <th colspan="2"><b> Stage {{j}}</b></th>
+                <th bgcolor="#585858" colspan="2"><FONT COLOR=WHITE SIZE=2><center><b> Stage {{j}}</b></th>
             %end
         </tr>
 
         <tr>
-            <th>#</th>
-            <th>#</th>
+            <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1>#</th>
+            <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1>#</th>
+            <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1>#</th>
             %for a in range(len(namezone)):
-                <th>Arrive</th>
-                <th>Diff</th>
+                <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1><center>Arrive</th>
+                <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1><center>Diff</th>
             %end
         </tr>
         </thead>
+        
         <tbody align="center"> 
         %for q in range(len(vehicle)):
             <tr>
-
-                <td>{{vehicle[q]}}</p></td>
-                <td>{{starttime[q]}}</p></td>
+                
+                    <td><a href="javascript:abrir('/comments/{{vehicle[q]}}')">
+                        &#9998;
+                        </a>
+                    </td>
+                
+                <td><FONT SIZE=1><center>{{vehicle[q]}}</p></td>
+                <td><FONT SIZE=1><center>{{starttime[q]}}</p></td>
                 %for k in range(len(namezone)):
                     % t = (q*len(namezone))+ k
                     %if resulttime[t] == ' ':
                         
-                        <td class="danger">{{resulttime[t]}}</td>
-                        <td class="danger">{{resultzone[t]}}</td>
+                        <td class="danger"><FONT SIZE=1><center>{{resulttime[t]}}</td>
+                        <td class="danger"><FONT SIZE=1><center>{{resultzone[t]}}</td>
                        
                     %else:
             
-                        <td class="success">{{resulttime[t]}}</p></td>
-                        <td class="success">{{resultzone[t]}}</p></td>
+                        <td class="success"><FONT SIZE=1><center>{{resulttime[t]}}</p></td>
+                        <td class="success"><FONT SIZE=1><center>{{resultzone[t]}}</p></td>
 
                     % end
                 %end
@@ -171,7 +157,6 @@ function mostrarFormulario(id)
             </tr>
         </tbody>
     </table>
-
     <a href="/result/deletall">Delete All Data</a>
     
 </body>

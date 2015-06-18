@@ -46,7 +46,7 @@ def index(db,stage_id):
         vector_driver.append(driver.driver_group)
         #Agarra un alpha y pregunta por todas las zonas, sig alpha y pregunta de vuelta por todas las zonas
         vehicle_num = driver.driver_group
-        
+
         start_time_tmp = datetime.strptime(vector_start_time[i], '%H:%M:%S') #Convierto en datetime para poder restar dsp
         vector_time.append(vector_start_time[i])
 
@@ -76,7 +76,6 @@ def index(db,stage_id):
             
     count = db.query(Stage.stage_id).distinct().count()    
     return template('result.html', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timeresult=tiemporsultado,startime=vector_time, stage_id=stage_id,count=count)
-    
 
 @app.route('/resultado/show', method='POST')
 def refresh(db):

@@ -1,0 +1,34 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+    
+<body>
+<table class="table table-bordered table-condensed" align="center">
+   
+      <tbody align="center">
+    <tr>
+        <td bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Vehicule</b></d>
+        <td bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Comment</b></td>
+        
+    </tr>
+   
+    % for item in tabla:
+    <tr>
+        <td align="center">{{item.driver_group}}</td>
+        <td align="center">{{item.comment}}
+        <p><center><small><a href="/comments/delete/{{item.driver_group}}">Delete comment</a></td>
+
+    </tr>
+    % end
+    
+</table>
+    
+<center><label for="name">Add comment</label>
+<form action="/comments/add/{{item.driver_group}}" method="POST">
+        <center><textarea name="comment" cols="40" rows="4" id="comment"></textarea>
+            <p></center><input type="submit" name="Add" id="Add" value="Add">
+</form>
+
+</body>
+</html>
