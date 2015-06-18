@@ -26,7 +26,7 @@ def addComment(db,driver_id):
 	db.query(Comments).filter(Comments.driver_group == driver_id).update({'driver_group':driver_id,'comment':comentario})
 	db.commit()
 	tabla = db.query(Comments).filter(Comments.driver_group==driver_id).all()
-	return template('comments.html', tabla=tabla,flagFile=flagFile)
+	return template('comments.html', tabla=tabla)
 
 @app.route('/comments/delete/<driver_id>')
 def deleteComment(db,driver_id):
