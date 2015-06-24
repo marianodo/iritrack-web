@@ -1,0 +1,39 @@
+%include('base2.html')
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <script src="/static/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="/static/css/resultTable.css">
+    <script src="/static/js/resultTable.js"></script>
+    <center><h2>Comments</h2></center><br>
+</head>
+<body>
+<table class="blue table-bordered">
+   
+      <thead align="center">
+    <tr>
+        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>ID</b></d>
+        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Vehicule</b></d>
+        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Date and Time</b></d>    
+        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Comment</b></td>
+        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Actions</b></td>
+        
+    </tr>
+    </thead>
+    <tbody>
+    % for item in tabla:
+    
+    <tr>
+        <td align="center">{{item.id}}</td>
+        <td align="center">{{item.driver_group}}</td>
+        <td align="center">{{item.datetime}}</td>
+        <td align="center">{{item.comment}}</td>
+        <td align="center"><small><a href="/allcomments/delete/{{item.id}}">Delete comment</a></td>
+
+    </tr>
+    
+    % end
+    </tbody>
+</table>
+</body>
+</html>
