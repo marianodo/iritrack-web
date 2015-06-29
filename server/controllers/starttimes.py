@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# -*- coding: latin-1-*-
 import os
 import xlrd
 from bottle import template, request, redirect
@@ -6,6 +9,18 @@ from server.models import StartTime
 from server.services import xlsParser
 from time import mktime
 from datetime import *
+
+import unicodedata
+import urllib2
+from cookielib import CookieJar
+from urllib2 import urlopen
+from bs4 import BeautifulSoup as bs
+
+cj = CookieJar()
+opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+
+
 @app.route('/starttimes')
 def index(db):
 	try:
@@ -100,5 +115,36 @@ def update_edit_driver(db):
 def deleteall(db):
 	db.query(StartTime).delete()
 
+	redirect('/starttimes')
+
+@app.post('/starttimes/web')
+def uploadWeb(db):
+	stageId = request.forms.get('stageId')
+	url = request.forms.get('url')
+	codigoHTML = opener.open (url).read()
+	soap = bs(codigoHTML)       # Paso el código HTML a BeautifulSoap
+	tabla = soap.find('table')
+	trs = tabla.findAll('tr')
+	for tr in trs:
+		tds = tr.findAll('td')
+		tmp = []
+		for j,td in enumerate(tds): # Imprime cada TD por separado
+			tmpData = td.string
+			if j == 6: 
+				try:
+					time = td.string.replace('.',':')
+					time = time.replace(' ','')
+					time = "0" + time + ":00"
+					tmpData = time
+				except:
+					pass
+			tmp.append(tmpData)
+		try:
+			if len(tmpData) > 6: #esto es porque los primeros tiempo los toma como 8.26 en vez de 08:26:00
+				name = ''.join((c for c in unicodedata.normalize('NFD', tmp[2].replace('&nbsp',' ')) if unicodedata.category(c) != 'Mn'))
+				timerun = StartTime(id = int(tmp[0]),driver_group=int(tmp[1]), name=name,start_time= str(tmpData),stage_id=stageId)
+				db.add(timerun)
+		except:
+			pass
 	redirect('/starttimes')
 	

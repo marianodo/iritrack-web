@@ -4,15 +4,15 @@
  
           <div class="panel-heading"><b>Upload File of Stage</b></div>
           <div class="panel-body">
-           <form enctype="multipart/form-data" action="/starttimes/upload" method="post">
-            <p><input type="file" name="starttimes"></p>
-            <input type="submit" value="Upload">
-            <label for="name">Add time in minutes
-              <input size="1" name="addtime" type="text" value="0">
-            </label>
-            <label for="name">Stage Id
-              <input size="1" name="stage_id" type="text" value="1">
-            </label>
+           <form enctype="multipart/form-data" action="/starttimes/web" method="post">
+              <input size ="30" name="url" type="text" placeholder="Input URL from Start Time">
+              <input type="submit" value="Upload">
+              <label for="name">Add time in minutes
+                <input size="1" name="addtime" type="text" value="0">
+              </label>
+              <label for="name">Stage Id
+                <input size="1" name="stageId" type="text" value="1">
+              </label>
             </form>
           </div>
  
