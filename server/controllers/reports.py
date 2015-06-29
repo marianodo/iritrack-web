@@ -72,9 +72,9 @@ def index(db,stage_id):
                     result = date_per_zone - start_time_tmp
                     result =  str(result).split(",")
                     tiemporsultado.append(date_zone)
-                    zonaresultado.append(result[1])
-            
-    count = db.query(Stage.stage_id).distinct().count()    
+                    zonaresultado.append(result[1])     
+    count = db.query(Stage.stage_id).distinct().count()
+
     return template('result.html', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timeresult=tiemporsultado,startime=vector_time, stage_id=stage_id,count=count)
     
 

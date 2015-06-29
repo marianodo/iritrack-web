@@ -6,7 +6,9 @@ from server.models import StartTime
 from server.services import xlsParser
 from time import mktime
 from datetime import *
+
 @app.route('/starttimes')
+@app.route('/starttimes/')
 def index(db):
 	try:
 		rows = db.query(StartTime).filter(StartTime.stage_id==1).all()

@@ -113,7 +113,7 @@ class dataFetch(object):
     def updateAll(self):
         connection = self.login()
         for driver in session.query(StartTime).all():
-            
+            print driver.driver_group
             self.updateDriver(driver.driver_group)
             #self.show(driver.driver_id)
             
