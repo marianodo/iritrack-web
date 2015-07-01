@@ -98,7 +98,7 @@ class dataFetch(object):
         connection = self.login()
         fecha_desde = self.fecha_desde
         fecha_hasta = self.fecha_hasta
-        session.query(Data).delete()
+        #session.query(Data).delete()
         drivers = session.query(StartTime.driver_group).filter(StartTime.stage_id==1).all()
         for driver in drivers:
             try:
@@ -110,31 +110,38 @@ class dataFetch(object):
                 pass
 
 
-    def updateAll(self):
+    def updateAll(self,stageId):
         connection = self.login()
-        for driver in session.query(StartTime).all():
-            
+        
+        for driver in session.query(StartTime.driver_group).filter(StartTime.stage_id==stageId).all():
             self.updateDriver(driver.driver_group)
             #self.show(driver.driver_id)
             
 
 
-    def updateDriver(self, driver_id):
+    def updateDriver(self,stageId):
         connection = self.login()
-        vehiculo = driver_id
         
         fechas = []
         fechas=self.FechaUpdate() #Si no tiene nada en la BD, busca en internet con la fecha de hoy desde las 0 hs hasta la hora actual
         
         fecha_desde_unix= fechas[0]
         fecha_hasta_unix=fechas[1]
-        try:
-            xlsFileObject = self.downloadXls(connection,fecha_desde_unix,fecha_hasta_unix,vehiculo)
-            rows = self.parseXls(xlsFileObject)
-            session.query(Data).filter(Data.vehicle == vehiculo).delete()
-            self.insertRows(rows, vehiculo)        
-        except:
-            pass
+        current_date = date.today() #Fecha de hoy
+        findDate = str(current_date) + "%"
+        print "##################",findDate
+        for driver in session.query(StartTime.driver_group).filter(StartTime.stage_id==stageId).all():
+            vehiculo = driver.driver_group
+            try:
+                xlsFileObject = self.downloadXls(connection,fecha_desde_unix,fecha_hasta_unix,vehiculo)
+                rows = self.parseXls(xlsFileObject)
+                print "VOY a BORRAR"
+                print vehiculo
+                session.query(Data).filter(Data.vehicle == vehiculo,Data.date.like(findDate)).delete()
+                self.insertRows(rows, vehiculo)        
+            except:
+                print "Error"
+                pass
         return True
 
     def FechaUpdate(self):
