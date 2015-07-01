@@ -21,14 +21,15 @@ opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
 
 
-@app.route('/starttimes')
-def index(db):
+@app.post('/starttimes/<stage_id>')
+@app.route('/starttimes/<stage_id>')
+def index(db,stage_id):
 	try:
-		rows = db.query(StartTime).filter(StartTime.stage_id==1).all()
+		rows = db.query(StartTime).filter(StartTime.stage_id==stage_id).all()
 		count = db.query(StartTime.stage_id).distinct().count()
 	except:
 		pass
-	return template('starttimes.html', rows=rows, stage=1, count=count,flagFile=True)
+	return template('starttimes.html', rows=rows, stage=stage_id, count=count,flagFile=True)
 
 @app.route('/starttimes', method='POST')
 def set_start_time(db):
@@ -85,15 +86,6 @@ def do_upload(db):
 	# count = db.query(StartTime.stage_id).distinct().count()
 	# return template('starttimes.html', rows=rows, stage=stage_id,count=count)
 	
-@app.route('/starttimes/show', method='POST')
-def do_show(db):
-	stage_id = request.forms.get('stage')
-	try:
-		rows = db.query(StartTime).filter(StartTime.stage_id==stage_id).all()
-		count = db.query(StartTime.stage_id).distinct().count()
-	except:
-		flag=1
-	return template('starttimes.html', rows=rows, stage=stage_id,count=count,flagFile=True)
 
 @app.route('/starttimes/editar/<stage>/<driver_id>')
 def edit_driver(db,stage,driver_id):

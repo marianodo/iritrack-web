@@ -1,37 +1,83 @@
 %include('base.html')
+<head>
+<meta charset="utf-8"/>
+    <script src="/static/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="/static/css/resultTable.css">
+    <link rel="stylesheet" href="/static/css/elusive-icons.min.css">
+    <script src="/static/js/resultTable.js"></script>
+<style type="text/css">
 
-		<div class="panel panel-default">
- 
-		  <div class="panel-heading"><b>Upload File of Stage</b></div>
-		  	<div class="panel-body">
+    .divPrincipal
+    {
+
+      margin-left: 60%;
+      height: 20%;
+      width: 25%;
+      border:solid 1px;
+      border-radius:10px;
+
+    } 
+    .div{
+      position:relative;
+      top:20%;
+      left:3%;
+      display:inline-block;
+      font-size:15px;
+	    font-family:Verdana,Helvetica;
+	    font-weight:bold;
+        
+       }
+       .boton{
+        font-size:12px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
+        color:white;
+        background:#6E6E6E;
+        border:0px;
+        width:80px;
+        height:30px;
+        border-radius:10px;
+       }
+    </style>
+</head>
+<body>
+		
+		  	<div class="divPrincipal">
+		  	<div class="div">
 		   		<form enctype="multipart/form-data" action="/stage/upload" method="post">
-					<p><input type="file" name="stage"></p>
-					<input type="submit" value="Upload">
+					<p><input style="font-size:15px;"type="file" name="stage"></p>
+					<input style="font-size:15px;" type="submit" value="Upload">
 					</label>
 				</form>
+			</div>
 		  </div>
  
 % if flagFile:
 
-	<table class="table table-hover" align="center">
-				<thead align="center">	
-					
+	<table class="blue table-bordered" align="center">
+	<thead >			
 		<tr>
-			<form action="/stage/show" method="post">
-				<div class="panel panel-default">
-					<div class="panel-heading"><strong>Stage Id Nº:
-		            <input name="stage" type="text" size="1"  value="{{stage_id}}">
-		            <input type="submit" value="Search"></strong><div style="text-align:right;"><b>Stage {{stage_id}} from {{count}}</b></div>
-            	</div>
-            	</div>
-        	</form>
+			
+				<div class="panel panel-default" style="text-align:center">
+          <div class="panel-heading">
+            %for j in range(1,count + 1):   
+
+            <form style="display:inline" action="/stage/{{j}}" method="post">
+                <input class="boton" id="capa1" type="submit" value="Stage {{j}}" </strong>
+             </form>  
+        %end      
+          </div>
+        </div>
+        <div style="text-align:center;"><h3><b>Stage {{stage_id}} </b></h3></div>
+    </tr>
+        	
         	
    		 </tr>
    		</thead>
-   		<tbody align="center">
+   	<tbody align="center">
    		 <tr>
-			<td><strong>Stage</strong></th>
-			<td><strong>Zone</strong></th>
+			<th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Stage</b> </th>
+			<th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Zone</b> </th>
 		</tr>
 			
 			% for zone in zones:
@@ -40,11 +86,9 @@
 		       <td>{{zone.zone}}</td>
 			</tr>
 			% end
-			</td>
-		</tr>
-		</tbody>
+		
 	</table>
-</div>
+
 	<a href="/stage/deletall">Delete All Stages</a>
 	
 %else:
@@ -52,3 +96,4 @@
 <h3>Archivo incorrecto. Verifique</h3>
 
 %end
+</body>

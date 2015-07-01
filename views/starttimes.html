@@ -9,7 +9,7 @@
   .div{
       position:absolute;
       top:17%;
-      left:47%;
+      left:67%;
       display:inline-block;
       font-size:15px;
         font-family:Verdana,Helvetica;
@@ -20,7 +20,7 @@
    {
       position:absolute;
       top:20%;
-      left:35%;
+      left:55%;
       display:inline-block;
       font-size:15px;
         font-family:Verdana,Helvetica;
@@ -30,20 +30,25 @@
   .divPrincipal
     {
 
-      margin-left: 30%;
+      margin-left: 50%;
       height: 26%;
       width: 43%;
       border:solid 1px;
       border-radius:10px;
 
     } 
-    .fondo {
-    background: url(/static/img/dakar2.jpg) no-repeat fixed center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
+    
+      .boton{
+        font-size:12px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
+        color:white;
+        background:#6E6E6E;
+        border:0px;
+        width:80px;
+        height:30px;
+        border-radius:10px;
+       }
 </style>
  <script languaje="javascript">
   function urlSelect()
@@ -59,7 +64,7 @@
   }
 </script>
 </head>
-<body class="fondo"> 
+<body > 
   <div class="divPrincipal" >
     
       <form action="">
@@ -97,24 +102,27 @@
     <thead align="center">  
 
     <tr>
-       <form action="/starttimes/show" method="post">
-        <div class="panel panel-default">
-          <div class="panel-heading"><strong>Stage Id Nº:
-                <input name="stage" type="text" size="1"  value="{{stage}}">
-                <input type="submit" value="Search"></strong><div style="text-align:right;"><b>Stage {{stage}} from {{count}} </b></div>
-              </div>
-              </div>
-            
-        </form>
-        
+       
+        <div class="panel panel-default" style="text-align:center">
+          <div class="panel-heading">
+            %for j in range(1,count + 1):   
+
+            <form style="display:inline" action="/starttimes/{{j}}" method="post">
+                <input class="boton" id="capa1" type="submit" value="Stage {{j}}" </strong>
+             </form>  
+        %end      
+          </div>
+        </div>
+        <div style="text-align:center;"><h3><b>Stage {{stage}} </b></h3></div>
     </tr>
     </thead>
       <tbody align="center">
     <tr>
-        <td><b>Driver</b></d>
-        <td width="30%"><b>Name</b></td>
-        <td><b>StartTime</b></td>
-        <td><b>Edit</b></td>
+      <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Driver</b> </th>
+      <th width="30%" bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Name</b> </th>
+      <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Start Time</b> </th>
+      <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Edit</b> </th>
+        
         
     </tr>
    
