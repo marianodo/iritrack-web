@@ -1,23 +1,99 @@
 %include('base.html')
+<head>
+ <meta charset="utf-8"/>
+    <script src="/static/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="/static/css/resultTable.css">
+    <link rel="stylesheet" href="/static/css/elusive-icons.min.css">
+    <script src="/static/js/resultTable.js"></script>
+<style type="text/css">
+  .div{
+      position:absolute;
+      top:17%;
+      left:47%;
+      display:inline-block;
+      font-size:15px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
+        
+       }
+  .divRadio
+   {
+      position:absolute;
+      top:20%;
+      left:35%;
+      display:inline-block;
+      font-size:15px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
 
-        <div class="panel panel-default">
- 
-          <div class="panel-heading"><b>Upload File of Stage</b></div>
-          <div class="panel-body">
-           <form enctype="multipart/form-data" action="/starttimes/web" method="post">
-              <input size ="30" name="url" type="text" placeholder="Input URL from Start Time">
+   }
+  .divPrincipal
+    {
+
+      margin-left: 30%;
+      height: 26%;
+      width: 43%;
+      border:solid 1px;
+      border-radius:10px;
+
+    } 
+    .fondo {
+    background: url(/static/img/dakar2.jpg) no-repeat fixed center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+</style>
+ <script languaje="javascript">
+  function urlSelect()
+  {
+    document.getElementById("divUrl").style.display="block";
+    document.getElementById("divFile").style.display="none"; 
+   
+  }
+  function fileSelect()
+  {
+    document.getElementById("divUrl").style.display="none";
+    document.getElementById("divFile").style.display="block"; 
+  }
+</script>
+</head>
+<body class="fondo"> 
+  <div class="divPrincipal" >
+    
+      <form action="">
+      <div class="divRadio">
+        <input type="radio" name="url" id="url" value="url" checked onClick="urlSelect()"><label for="url"> Select from URL</label><br>
+        <input type="radio" name="url"  id="file" value="file" onclick="fileSelect()"><label for="file"> Select from File</label>
+      </div>
+        <div id="divUrl" class="div">
+            <form enctype="multipart/form-data" action="/starttimes/web" method="post">
+              <i>URL</i><input size ="30" name="url" type="text" placeholder="Input URL from Start Time">
+              </br>
+              <i>Add time in Minutes</i><input size="1" name="addtime" type="text" value="0">
+              </br>
+              <i>Select Stage</i><input size="1" name="stageId" type="text" value="1">
+              </br>
               <input type="submit" value="Upload">
-              <label for="name">Add time in minutes
-                <input size="1" name="addtime" type="text" value="0">
-              </label>
-              <label for="name">Stage Id
-                <input size="1" name="stageId" type="text" value="1">
-              </label>
             </form>
-          </div>
- 
+        </div>
+        <div id="divFile" style="display:none" class="div"> 
+            <form enctype="multipart/form-data" action="/starttimes/upload" method="post">
+              <input type="file" name="starttimes">
+             
+              <i>Add time in Minutes</i><input size="1" name="addtime" type="text" value="0">
+              </br>
+              <i>Select Stage</i><input size="1" name="stageId" type="text" value="1">
+              </br>
+              <input type="submit" value="Upload">
+            </form>
+        </div>
+    </form>
+    </div>
+    </br>
 % if flagFile:
-    <table class="table table-hover" align="center">
+    <table class="blue table-bordered" align="center">
     <thead align="center">  
 
     <tr>
@@ -35,9 +111,10 @@
     </thead>
       <tbody align="center">
     <tr>
-        <td><b>Driver_id</b></d>
+        <td><b>Driver</b></d>
         <td width="30%"><b>Name</b></td>
         <td><b>StartTime</b></td>
+        <td><b>Edit</b></td>
         
     </tr>
    
@@ -59,3 +136,4 @@
 <h3>Archivo incorrecto. Verifique</h3>
 
 %end
+</body>

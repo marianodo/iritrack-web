@@ -40,9 +40,10 @@ def set_start_time(db):
 @app.route('/starttimes/upload', method='POST')
 def do_upload(db):
 	addtime = request.forms.get('addtime')
-	stage_id = request.forms.get('stage_id')
+	stage_id = request.forms.get('stageId')
 	session=db
 	upload = request.files.get('starttimes')
+	print "########33",stage_id
 	try:
 
 		headers = ['orden', 'driver_id', 'name', 'country', 'starttime']
