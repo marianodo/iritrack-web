@@ -11,6 +11,7 @@ from time import mktime
 from datetime import *
 from server.services import dataFetch
 @app.route('/resultado/<stage_id>')
+@app.post('/resultado/<stage_id>')
 def index(db,stage_id):
     
     drivers=db.query(StartTime.driver_group,StartTime.start_time).filter(StartTime.stage_id==stage_id).all() #Busco todos los driver_id que se generaron por el excel largadas.xls
@@ -77,10 +78,6 @@ def index(db,stage_id):
     count = db.query(Stage.stage_id).distinct().count()    
     return template('result.html', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timeresult=tiemporsultado,startime=vector_time, stage_id=stage_id,count=count)
 
-@app.route('/resultado/show', method='POST')
-def refresh(db):
-    stage_id = request.forms.get('stage')
-    redirect('/resultado/%s'% stage_id)
     
 @app.post('/resultado')
 def searchData(db):

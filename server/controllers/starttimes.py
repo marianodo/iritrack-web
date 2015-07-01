@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# -*- coding: latin-1-*-
 import os
 import xlrd
 from bottle import template, request, redirect
@@ -6,14 +9,27 @@ from server.models import StartTime
 from server.services import xlsParser
 from time import mktime
 from datetime import *
-@app.route('/starttimes')
-def index(db):
+
+import unicodedata
+import urllib2
+from cookielib import CookieJar
+from urllib2 import urlopen
+from bs4 import BeautifulSoup as bs
+
+cj = CookieJar()
+opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+
+
+@app.post('/starttimes/<stage_id>')
+@app.route('/starttimes/<stage_id>')
+def index(db,stage_id):
 	try:
-		rows = db.query(StartTime).filter(StartTime.stage_id==1).all()
+		rows = db.query(StartTime).filter(StartTime.stage_id==stage_id).all()
 		count = db.query(StartTime.stage_id).distinct().count()
 	except:
 		pass
-	return template('starttimes.html', rows=rows, stage=1, count=count,flagFile=True)
+	return template('starttimes.html', rows=rows, stage=stage_id, count=count,flagFile=True)
 
 @app.route('/starttimes', method='POST')
 def set_start_time(db):
@@ -25,9 +41,10 @@ def set_start_time(db):
 @app.route('/starttimes/upload', method='POST')
 def do_upload(db):
 	addtime = request.forms.get('addtime')
-	stage_id = request.forms.get('stage_id')
+	stage_id = request.forms.get('stageId')
 	session=db
 	upload = request.files.get('starttimes')
+	print "########33",stage_id
 	try:
 
 		headers = ['orden', 'driver_id', 'name', 'country', 'starttime']
@@ -69,15 +86,6 @@ def do_upload(db):
 	# count = db.query(StartTime.stage_id).distinct().count()
 	# return template('starttimes.html', rows=rows, stage=stage_id,count=count)
 	
-@app.route('/starttimes/show', method='POST')
-def do_show(db):
-	stage_id = request.forms.get('stage')
-	try:
-		rows = db.query(StartTime).filter(StartTime.stage_id==stage_id).all()
-		count = db.query(StartTime.stage_id).distinct().count()
-	except:
-		flag=1
-	return template('starttimes.html', rows=rows, stage=stage_id,count=count,flagFile=True)
 
 @app.route('/starttimes/editar/<stage>/<driver_id>')
 def edit_driver(db,stage,driver_id):
@@ -100,5 +108,36 @@ def update_edit_driver(db):
 def deleteall(db):
 	db.query(StartTime).delete()
 
+	redirect('/starttimes')
+
+@app.post('/starttimes/web')
+def uploadWeb(db):
+	stageId = request.forms.get('stageId')
+	url = request.forms.get('url')
+	codigoHTML = opener.open (url).read()
+	soap = bs(codigoHTML)       # Paso el código HTML a BeautifulSoap
+	tabla = soap.find('table')
+	trs = tabla.findAll('tr')
+	for tr in trs:
+		tds = tr.findAll('td')
+		tmp = []
+		for j,td in enumerate(tds): # Imprime cada TD por separado
+			tmpData = td.string
+			if j == 6: 
+				try:
+					time = td.string.replace('.',':')
+					time = time.replace(' ','')
+					time = "0" + time + ":00"
+					tmpData = time
+				except:
+					pass
+			tmp.append(tmpData)
+		try:
+			if len(tmpData) > 6: #esto es porque los primeros tiempo los toma como 8.26 en vez de 08:26:00
+				name = ''.join((c for c in unicodedata.normalize('NFD', tmp[2].replace('&nbsp',' ')) if unicodedata.category(c) != 'Mn'))
+				timerun = StartTime(id = int(tmp[0]),driver_group=int(tmp[1]), name=name,start_time= str(tmpData),stage_id=stageId)
+				db.add(timerun)
+		except:
+			pass
 	redirect('/starttimes')
 	

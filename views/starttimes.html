@@ -1,43 +1,128 @@
 %include('base.html')
+<head>
+ <meta charset="utf-8"/>
+    <script src="/static/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="/static/css/resultTable.css">
+    <link rel="stylesheet" href="/static/css/elusive-icons.min.css">
+    <script src="/static/js/resultTable.js"></script>
+<style type="text/css">
+  .div{
+      position:absolute;
+      top:17%;
+      left:67%;
+      display:inline-block;
+      font-size:15px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
+        
+       }
+  .divRadio
+   {
+      position:absolute;
+      top:20%;
+      left:55%;
+      display:inline-block;
+      font-size:15px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
 
-        <div class="panel panel-default">
- 
-          <div class="panel-heading"><b>Upload File of Stage</b></div>
-          <div class="panel-body">
-           <form enctype="multipart/form-data" action="/starttimes/upload" method="post">
-            <p><input type="file" name="starttimes"></p>
-            <input type="submit" value="Upload">
-            <label for="name">Add time in minutes
-              <input size="1" name="addtime" type="text" value="0">
-            </label>
-            <label for="name">Stage Id
-              <input size="1" name="stage_id" type="text" value="1">
-            </label>
+   }
+  .divPrincipal
+    {
+
+      margin-left: 50%;
+      height: 26%;
+      width: 43%;
+      border:solid 1px;
+      border-radius:10px;
+
+    } 
+    
+      .boton{
+        font-size:12px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
+        color:white;
+        background:#6E6E6E;
+        border:0px;
+        width:80px;
+        height:30px;
+        border-radius:10px;
+       }
+</style>
+ <script languaje="javascript">
+  function urlSelect()
+  {
+    document.getElementById("divUrl").style.display="block";
+    document.getElementById("divFile").style.display="none"; 
+   
+  }
+  function fileSelect()
+  {
+    document.getElementById("divUrl").style.display="none";
+    document.getElementById("divFile").style.display="block"; 
+  }
+</script>
+</head>
+<body > 
+  <div class="divPrincipal" >
+    
+      <form action="">
+      <div class="divRadio">
+        <input type="radio" name="url" id="url" value="url" checked onClick="urlSelect()"><label for="url"> Select from URL</label><br>
+        <input type="radio" name="url"  id="file" value="file" onclick="fileSelect()"><label for="file"> Select from File</label>
+      </div>
+        <div id="divUrl" class="div">
+            <form enctype="multipart/form-data" action="/starttimes/web" method="post">
+              <i>URL</i><input size ="30" name="url" type="text" placeholder="Input URL from Start Time">
+              </br>
+              <i>Add time in Minutes</i><input size="1" name="addtime" type="text" value="0">
+              </br>
+              <i>Select Stage</i><input size="1" name="stageId" type="text" value="1">
+              </br>
+              <input type="submit" value="Upload">
             </form>
-          </div>
- 
+        </div>
+        <div id="divFile" style="display:none" class="div"> 
+            <form enctype="multipart/form-data" action="/starttimes/upload" method="post">
+              <input type="file" name="starttimes">
+             
+              <i>Add time in Minutes</i><input size="1" name="addtime" type="text" value="0">
+              </br>
+              <i>Select Stage</i><input size="1" name="stageId" type="text" value="1">
+              </br>
+              <input type="submit" value="Upload">
+            </form>
+        </div>
+    </form>
+    </div>
+    </br>
 % if flagFile:
-    <table class="table table-hover" align="center">
+    <table class="blue table-bordered" align="center">
     <thead align="center">  
 
     <tr>
-       <form action="/starttimes/show" method="post">
-        <div class="panel panel-default">
-          <div class="panel-heading"><strong>Stage Id Nº:
-                <input name="stage" type="text" size="1"  value="{{stage}}">
-                <input type="submit" value="Search"></strong><div style="text-align:right;"><b>Stage {{stage}} from {{count}} </b></div>
-              </div>
-              </div>
-            
-        </form>
-        
+       
+        <div class="panel panel-default" style="text-align:center">
+          <div class="panel-heading">
+            %for j in range(1,count + 1):   
+
+            <form style="display:inline" action="/starttimes/{{j}}" method="post">
+                <input class="boton" id="capa1" type="submit" value="Stage {{j}}" </strong>
+             </form>  
+        %end      
+          </div>
+        </div>
+        <div style="text-align:center;"><h3><b>Stage {{stage}} </b></h3></div>
     </tr>
     </thead>
       <tbody align="center">
     <tr>
-        <td><b>Driver_id</b></d>
-        <td width="30%"><b>Name</b></td>
-        <td><b>StartTime</b></td>
+      <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Driver</b> </th>
+      <th width="30%" bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Name</b> </th>
+      <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Start Time</b> </th>
+      <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b> Edit</b> </th>
+        
         
     </tr>
    
@@ -59,3 +144,4 @@
 <h3>Archivo incorrecto. Verifique</h3>
 
 %end
+</body>

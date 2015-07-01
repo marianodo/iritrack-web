@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# -*- coding: latin-1-*-
 from sqlalchemy import create_engine, Column, Integer, Sequence, String
 from server import Base
 

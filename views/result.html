@@ -34,7 +34,19 @@
     <link rel="stylesheet" href="/static/css/resultTable.css">
     <link rel="stylesheet" href="/static/css/elusive-icons.min.css">
     <script src="/static/js/resultTable.js"></script>
-
+    <style type="text/css">
+  .boton{
+        font-size:12px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
+        color:white;
+        background:#6E6E6E;
+        border:0px;
+        width:80px;
+        height:30px;
+        border-radius:10px;
+       }
+</style>
     <script> 
         function abrir(url) { 
         open(url,'','top=300,left=300,width=400,height=330') ; 
@@ -54,10 +66,10 @@
 
                                 if (document.getElementById("acepto").checked)
                                 {
-                                    location.href='/resultado/update';
+                                    location.href='/resultado/update/{{stage_id}}';
                                 }
 
-                             }, "600000");
+                             }, "1200000");
     }
 
     </script>
@@ -74,36 +86,40 @@ function mostrarFormulario(id)
 </head>
     
 <body onload="redireccionar()">
-     
+    
     <div class="panel panel-default">
 
       <div class="panel-heading"><b>Result from Drivers</b></div>
-        <div class="panel-body">
-            
-            <span>
+        <div class="panel-body" >
+        <div style="display:inline">    
+            <span style="display:inline">
             <form action="/resultado/update/{{stage_id}}" method="post" style="display:inline">
-                <i><input type="submit" value="Update Now" onclick="mostrarFormulario('capa2')"></i> 
+                <i><input class="boton" type="submit" value="Update Now" onclick="mostrarFormulario('capa2')"></i> 
             </form>
-            <form name="form1" onsubmit="return redireccionar()">
-            <span><input type="checkbox" name="acepto" id ="acepto" checked onClick="redireccionar()"><label for="acepto"><i>(The page will update every five minutes)</i><label></span>
-        </form>
+            
+            <input type="checkbox" name="acepto" id ="acepto" checked onClick="redireccionar()"><label for="acepto"><i>  (The page will update every TEN minutes)</i></label>
+        </div>
         </span>
                 <div style="display:none" id="capa2">
                     <center><img align="center" src="/static/cargando2.gif"></center>
                 </div>
             </div>
         </div>
-                <span>
-                <form action="/resultado/show" method="post">
-                    <div  class="panel panel-default">
-                        <div class="panel-heading"><strong>Stage Id Nº:
-                        <input name="stage" type="text" size="1"  value="{{stage_id}}">
-                         <input id="capa1" type="submit" value="Search" onclick="mostrarFormulario('capa2')"></strong>
-                        <div style="text-align:right;"><b>Stage {{stage_id}} from {{count}}</b></div>    
-                    </div>
-                </form>     
-            </span>   
+        
+         <div class="panel panel-default" style="text-align:center">
+            <div class="panel-heading">
           
+        %for j in range(1,count + 1):   
+
+            <form style="display:inline" action="/resultado/{{j}}" method="post">
+                <input class="boton" id="capa1" type="submit" value="Stage {{j}}" onclick="mostrarFormulario('capa2')"></strong>
+             </form>  
+        %end
+
+          </div> 
+        </div> 
+          
+          <div style="text-align:center;"><h3><b>Stage {{stage_id}} </b></h3></div>
             <table class="blue table-bordered">
            
            <thead>         
