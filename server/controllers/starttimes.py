@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # -*- coding: latin-1-*-
+# coding: utf-8
 import os
 import xlrd
 from bottle import template, request, redirect
@@ -36,7 +37,7 @@ def set_start_time(db):
 	name = request.forms.get('name')
 	driver_id = request.forms.get('driver_id')
 	db.add(Driver(driver_id=driver_id, name=name))
-	redirect('/starttimes')
+	redirect('/starttimes/1')
 
 @app.route('/starttimes/upload', method='POST')
 def do_upload(db):
@@ -44,7 +45,6 @@ def do_upload(db):
 	stage_id = request.forms.get('stageId')
 	session=db
 	upload = request.files.get('starttimes')
-	print "########33",stage_id
 	try:
 
 		headers = ['orden', 'driver_id', 'name', 'country', 'starttime']
@@ -69,19 +69,14 @@ def do_upload(db):
 			#timedr = timedr + timedelta(minutes=int(addtime))
 			if timedr == timetmp:
 				timedr=timedelta(hours=hour,minutes=minute,seconds=30)
-
 			timerun = StartTime(id = i,driver_group=int(id_group.value), name=name_driver.value,start_time= str(timedr),stage_id=str(stage_id))
 			timetmp = timedr
 			session.add(timerun)
 			
 		session.commit()
-		
-		
 	except:
-		
 		return template('starttimes.html', rows="", stage=1, count="",flagFile=False)
-
-	redirect('/starttimes')
+	redirect('/starttimes/1')
 	# rows = db.query(StartTime).filter(StartTime.stage_id==stage_id).all()
 	# count = db.query(StartTime.stage_id).distinct().count()
 	# return template('starttimes.html', rows=rows, stage=stage_id,count=count)
@@ -95,23 +90,25 @@ def edit_driver(db,stage,driver_id):
 @app.route('/starttimes/update', method='POST')
 def update_edit_driver(db):
 	driver_id = request.forms.get('driverid')
-	name = request.forms.get('name')
+	name = request.forms.get('name').replace('&nbsp',' ')
 	startime = request.forms.get('startime')
 	stage = request.forms.get('stage')
+
 	#update(StartTime).where(StartTime.driver_id == driver_id).values(driver_id=driver_id,start_time=startime,name=name)
-	db.query(StartTime).filter(StartTime.driver_group == driver_id,StartTime.stage_id == stage).update({'driver_group':driver_id,'start_time':startime,'name':name,'stage_id':stage})
+	db.query(StartTime).filter(StartTime.driver_group == driver_id,StartTime.stage_id == stage).update({'driver_group':driver_id,'start_time':startime,'name':name.decode("utf-8"),'stage_id':stage})
 	db.commit()
-	redirect('/starttimes')
+	redirect('/starttimes/1')
 	
 
 @app.route('/starttimes/deletall')
 def deleteall(db):
 	db.query(StartTime).delete()
 
-	redirect('/starttimes')
+	redirect('/starttimes/1')
 
 @app.post('/starttimes/web')
 def uploadWeb(db):
+	print "##########################"
 	stageId = request.forms.get('stageId')
 	url = request.forms.get('url')
 	codigoHTML = opener.open (url).read()
@@ -134,10 +131,11 @@ def uploadWeb(db):
 			tmp.append(tmpData)
 		try:
 			if len(tmpData) > 6: #esto es porque los primeros tiempo los toma como 8.26 en vez de 08:26:00
+				print "#########", type(tmp)
 				name = ''.join((c for c in unicodedata.normalize('NFD', tmp[2].replace('&nbsp',' ')) if unicodedata.category(c) != 'Mn'))
 				timerun = StartTime(id = int(tmp[0]),driver_group=int(tmp[1]), name=name,start_time= str(tmpData),stage_id=stageId)
 				db.add(timerun)
 		except:
 			pass
-	redirect('/starttimes')
+	redirect('/starttimes/1')
 	
