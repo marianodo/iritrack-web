@@ -3,6 +3,7 @@ from bottle import template, request, redirect
 from server import app
 from server.models import StartTime
 from server.models import Comments
+from server.models import Labels
 from datetime import *
 
 @app.route('/comments/<driver_id>')
@@ -34,3 +35,15 @@ def deleteComment(db,ident,driver_id):
     driver = driver_id
     return template('comments.html', tabla=tabla,  driver=driver)
 	
+
+@app.route('/comments/addLabel/<idLabel>/<driverGroup>')
+def addLabel(db,idLabel,driverGroup):
+    
+    searchLabel = db.query(Labels).filter(Labels.driverGroup==driverGroup, Labels.idLabel==idLabel).first()
+    if searchLabel == None:
+        label = Labels(driverGroup=driverGroup,  idLabel=idLabel)
+        db.add(label)
+        db.commit()
+    tabla = db.query(Comments).filter(Comments.driver_group==driverGroup).all()
+    driver = driverGroup
+    return template('comments.html', tabla=tabla,  driver=driver)
