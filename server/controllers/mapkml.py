@@ -23,14 +23,14 @@ def do_upload(db):
 	upload = request.files.get('map')
 	
 	
-	file_path = "C:/Users/Nano/Desktop/iritrac-robots-master/tmp/{file}".format(file=upload.filename)
+	file_path = os.getcwd() + "/tmp/{file}".format(file=upload.filename)
 	upload.save(file_path)
 	
 	MDB = file_path 
 	DRV = '{Microsoft Access Driver (*.mdb)}'; PWD = 'pw'
 	
 	name = upload.filename[:-4]
-	print "########33",name
+
 	extension = MDB[:3]
 	zipname = "tmp/" + name + ".zip"
 	zf = zipfile.ZipFile(zipname, mode='w')
@@ -101,7 +101,7 @@ def do_upload(db):
 				coo= [(b,a)]
 			
 			linea=archi.readline()
-		print "#### ",a," ####", b
+
 		ls = kml.newlinestring(name='A LineString')
 		ls.coords = coo
 		ls.extrude = 1
