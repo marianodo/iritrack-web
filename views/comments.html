@@ -11,6 +11,7 @@
         <td bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Vehicule</b></d>
         <td bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Date and Time</b></d>    
         <td bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Comment</b></td>
+        <td bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Labels</b></td>
         
     </tr>
    
@@ -19,9 +20,14 @@
     <tr>
         <td align="center">{{item.driver_group}}</td>
         <td align="center"><FONT SIZE=2>{{item.datetime}}</td>
-        <td align="center">{{item.comment}}
-        <p><center><small><a href="/comments/delete/{{item.id}}/{{item.driver_group}}">Delete comment</a></td>
-
+        <td align="center">{{item.comment}}</td>
+        <td align="center">
+        %for i in item.labels.split(","):
+        <img src="/static/labels/{{i}}.png" width="20px" height="22px">
+        %end
+        <p><center><small><a href="/comments/delete/{{item.id}}/{{item.driver_group}}">Delete comment</a>
+        
+        </td>
     </tr>
     
     % end
@@ -29,9 +35,27 @@
     
 <center><label for="name">Add comment</label>
 <form action="/comments/add/{{driver}}" method="POST">
-        <center><textarea name="comment" cols="40" rows="4" id="comment"></textarea></br>
-        <a href="/comments/addLabel/1/{{driver}}"><img src="/static/labels/1.png" width="40px" height="42px"></a>
-    <a href="/comments/addLabel/2/{{driver}}"><img src="/static/labels/2.png" width="40px" height="42px"></a>
+<table>
+    <tr>
+    <td><img src="/static/labels/1.png" width="40px" height="42px"></td>
+    <td><img src="/static/labels/2.png" width="40px" height="42px"></td>
+    <td><img src="/static/labels/3.png" width="40px" height="42px"></td>
+    <td><img src="/static/labels/4.png" width="40px" height="42px"></td>
+    <td><img src="/static/labels/5.png" width="40px" height="42px"></td>
+    </tr>
+    <tr>
+        <td align="center"><input type="checkbox" name="icon" value="1"></td>        
+        <td align="center"><input type="checkbox" name="icon" value="2"></td>        
+        <td align="center"><input type="checkbox" name="icon" value="3"></td>        
+        <td align="center"><input type="checkbox" name="icon" value="4"></td>        
+        <td align="center"><input type="checkbox" name="icon" value="5"></td>        
+    </tr>
+</br>
+
+
+</table>
+ 
+<center><textarea name="comment" cols="40" rows="4" id="comment"></textarea></br>
             <p></center><input type="submit" name="Add" id="Add" value="Add">
 </form>
 

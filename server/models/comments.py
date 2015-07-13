@@ -7,6 +7,7 @@ class Comments(Base):
     datetime =  Column(String(20))
     driver_group = Column(Integer)
     comment = Column(String(300))
+    labels = Column(String(10))
 
     def __repr__(self):
         return "<Comment: '%s' (driver_group:'%s', comment:'%s')>" % (self.id, self.driver_group, self.comment)
