@@ -120,5 +120,5 @@ def deleteall(db):
 @app.post('/resultado/update/<stage_id>')
 @app.route('/resultado/update/<stage_id>')
 def updateData(db,stage_id):   
-    dataFetch("a","b").updateAll()  
+    dataFetch("a","b").updateDriver(stage_id)  
     redirect('/resultado/%s'% stage_id)

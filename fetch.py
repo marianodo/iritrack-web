@@ -29,9 +29,9 @@ def FechaDesde():
     #ano_desde = raw_input("Ano Desde en ""YYYY"": ")
     #hora_desde = raw_input("Hora Desde en ""HH"": ")
     #minuto_desde = raw_input("Minuto Desde en ""mm"": ")
-    dia_desde='23'
-    mes_desde='08'
-    ano_desde='2014'
+    dia_desde='27'
+    mes_desde='06'
+    ano_desde='2015'
     hora_desde = '00'
     minuto_desde='00'
     fecha_desde = dia_desde + '/' + mes_desde + '/' + ano_desde + " " + hora_desde + ':' + minuto_desde
@@ -47,9 +47,9 @@ def FechaHasta():
     #ano_hasta = raw_input("Ano Hasta en ""YYYY"": ")
     #hora_hasta = raw_input("Hora Hasta en ""HH"": ")
     #minuto_hasta = raw_input("Minuto Hasta ""mm"": ")
-    dia_hasta='23'
-    mes_hasta='08'
-    ano_hasta='2014'
+    dia_hasta='27'
+    mes_hasta='06'
+    ano_hasta='2015'
     hora_hasta = '23'
     minuto_hasta='59'
     fecha_hasta = dia_hasta+ '/' + mes_hasta + '/' + ano_hasta + " " + hora_hasta + ':' + minuto_hasta

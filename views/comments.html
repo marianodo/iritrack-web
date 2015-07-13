@@ -25,12 +25,13 @@
     </tr>
     
     % end
-    
-</table>
+    </table>
     
 <center><label for="name">Add comment</label>
 <form action="/comments/add/{{driver}}" method="POST">
-        <center><textarea name="comment" cols="40" rows="4" id="comment"></textarea>
+        <center><textarea name="comment" cols="40" rows="4" id="comment"></textarea></br>
+        <a href="/comments/addLabel/1/{{driver}}"><img src="/static/labels/1.png" width="40px" height="42px"></a>
+    <a href="/comments/addLabel/2/{{driver}}"><img src="/static/labels/2.png" width="40px" height="42px"></a>
             <p></center><input type="submit" name="Add" id="Add" value="Add">
 </form>
 

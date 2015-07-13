@@ -6,3 +6,4 @@ from lastupdate import LastUpdate
 from dateupdate import DateUpdate
 from datedriverupdate import DateDriverUpdate
 from comments import Comments
+from labels import Labels
