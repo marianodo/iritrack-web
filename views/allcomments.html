@@ -32,12 +32,12 @@
    
       <thead align="center">
     <tr>
-        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>ID</b></d>
-        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Vehicule</b></d>
-        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Date and Time</b></d>    
-        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Comment</b></td>
-        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Labels</b></td>
-        <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Actions</b></td>
+        
+        <th width="10%" bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Vehicule</b></d>
+        <th width="20%" bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Date and Time</b></d>    
+        <th width="40%" bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Comment</b></td>
+        <th width="10%" bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Labels</b></td>
+        <th width="20%" bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=2><b>Actions</b></td>
 
     </tr>
     </thead>
@@ -45,7 +45,7 @@
     % for item in tabla:
     
     <tr>
-        <td align="center">{{item.id}}</td>
+       
         <td align="center">{{item.driver_group}}</td>
         <td align="center">{{item.datetime}}</td>
         <td align="center">{{item.comment}}</td>

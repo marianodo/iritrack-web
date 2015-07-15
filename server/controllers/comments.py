@@ -28,7 +28,7 @@ def addComment(db,driver_id):
     except:
         pass
     date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    ins = Comments(driver_group=driver_id, datetime=date, comment=comentario,labels=label[1:])
+    ins = Comments(driver_group=driver_id, datetime=date, comment=comentario.decode("utf-8"),labels=label[1:])
     db.add(ins)
     db.commit()
     tabla = db.query(Comments).filter(Comments.driver_group==driver_id).all()
