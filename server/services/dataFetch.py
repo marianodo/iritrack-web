@@ -129,18 +129,16 @@ class dataFetch(object):
         fecha_hasta_unix=fechas[1]
         current_date = date.today() #Fecha de hoy
         findDate = str(current_date) + "%"
-        print "##################",findDate
+
         for driver in session.query(StartTime.driver_group).filter(StartTime.stage_id==stageId).all():
             vehiculo = driver.driver_group
             try:
                 xlsFileObject = self.downloadXls(connection,fecha_desde_unix,fecha_hasta_unix,vehiculo)
                 rows = self.parseXls(xlsFileObject)
-                print "VOY a BORRAR"
-                print vehiculo
+
                 session.query(Data).filter(Data.vehicle == vehiculo,Data.date.like(findDate)).delete()
                 self.insertRows(rows, vehiculo)        
             except:
-                print "Error"
                 pass
         return True
 

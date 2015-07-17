@@ -77,9 +77,6 @@ def do_upload(db):
 	except:
 		return template('starttimes.html', rows="", stage=1, count="",flagFile=False)
 	redirect('/starttimes/1')
-	# rows = db.query(StartTime).filter(StartTime.stage_id==stage_id).all()
-	# count = db.query(StartTime.stage_id).distinct().count()
-	# return template('starttimes.html', rows=rows, stage=stage_id,count=count)
 	
 
 @app.route('/starttimes/editar/<stage>/<driver_id>')
@@ -108,8 +105,8 @@ def deleteall(db):
 
 @app.post('/starttimes/web')
 def uploadWeb(db):
-	print "##########################"
 	stageId = request.forms.get('stageId')
+	addtime = request.forms.get('addtime')
 	url = request.forms.get('url')
 	codigoHTML = opener.open (url).read()
 	soap = bs(codigoHTML)       # Paso el código HTML a BeautifulSoap
@@ -119,19 +116,22 @@ def uploadWeb(db):
 		tds = tr.findAll('td')
 		tmp = []
 		for j,td in enumerate(tds): # Imprime cada TD por separado
+
 			tmpData = td.string
 			if j == 6: 
 				try:
 					time = td.string.replace('.',':')
 					time = time.replace(' ','')
 					time = "0" + time + ":00"
-					tmpData = time
+					t = datetime.strptime(time, '%H:%M:%S')
+					timedr = timedelta(hours=t.hour,minutes=t.minute ,seconds=t.second)
+					timedr =timedelta(hours=t.hour,minutes=t.minute + int(addtime) ,seconds=t.second)
+					tmpData = str(timedr)
 				except:
 					pass
 			tmp.append(tmpData)
 		try:
 			if len(tmpData) > 6: #esto es porque los primeros tiempo los toma como 8.26 en vez de 08:26:00
-				print "#########", type(tmp)
 				name = ''.join((c for c in unicodedata.normalize('NFD', tmp[2].replace('&nbsp',' ')) if unicodedata.category(c) != 'Mn'))
 				timerun = StartTime(id = int(tmp[0]),driver_group=int(tmp[1]), name=name,start_time= str(tmpData),stage_id=stageId)
 				db.add(timerun)
