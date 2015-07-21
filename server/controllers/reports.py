@@ -119,6 +119,28 @@ def deleteall(db):
 
 @app.post('/resultado/update/<stage_id>')
 @app.route('/resultado/update/<stage_id>')
-def updateData(db,stage_id):   
-    dataFetch("a","b").updateDriver(stage_id)  
+def updateData(db,stage_id):
+    try:
+        last_update = db.query(LastUpdate.time).filter(LastUpdate.id =="1").one() #Me trae la ultima fecha de actualizacion
+        timeSearch = last_update[0]
+    except:
+        timeSearch = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        db.query(LastUpdate).filter(LastUpdate.id == 1).update({'time': timeSearch})
+        db.commit()
+    
+    timeFind = datetime.strptime(timeSearch, '%Y-%m-%d %H:%M:%S')
+    timeNow = datetime.now()
+    timeGral = timeNow - timeFind
+    if timeGral.days == 0:
+        dataFetch(str(timeFind),"b").updateDriver(stage_id)
+    else:
+        current_date = date.today() #Fecha de hoy
+        current_date=str(current_date) #convierto en string
+        inicial_date = current_date + ' 00:00:00' #Le agrego la hora 00
+        print "####",inicial_date
+        dataFetch(inicial_date,"b").updateDriver(stage_id)
+
+    timeSearch = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    db.query(LastUpdate).filter(LastUpdate.id == 1).update({'time': timeSearch})
+    db.commit()
     redirect('/resultado/%s'% stage_id)
