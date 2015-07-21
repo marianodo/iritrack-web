@@ -112,16 +112,13 @@ class dataFetch(object):
 
     def updateAll(self,stageId):
         connection = self.login()
-        
         for driver in session.query(StartTime.driver_group).filter(StartTime.stage_id==stageId).all():
             self.updateDriver(driver.driver_group)
             #self.show(driver.driver_id)
             
-
-
     def updateDriver(self,stageId):
         connection = self.login()
-        
+        dateFrom = self.fecha_desde
         fechas = []
         fechas=self.FechaUpdate() #Si no tiene nada en la BD, busca en internet con la fecha de hoy desde las 0 hs hasta la hora actual
         
@@ -135,7 +132,6 @@ class dataFetch(object):
             try:
                 xlsFileObject = self.downloadXls(connection,fecha_desde_unix,fecha_hasta_unix,vehiculo)
                 rows = self.parseXls(xlsFileObject)
-
                 session.query(Data).filter(Data.vehicle == vehiculo,Data.date.like(findDate)).delete()
                 self.insertRows(rows, vehiculo)        
             except:
@@ -144,17 +140,16 @@ class dataFetch(object):
 
     def FechaUpdate(self):
         newfecha = []
-        current_date = date.today() #Fecha de hoy
-        current_date=str(current_date) #convierto en string
-        inicial_date = current_date + ' 00:00:00' #Le agrego la hora 00
-        inicial_date = datetime.strptime(inicial_date,'%Y-%m-%d %H:%M:%S') #Convierto formato Fecha
+        dateFrom = self.fecha_desde
+        print dateFrom
+        inicial_date = datetime.strptime(dateFrom,'%Y-%m-%d %H:%M:%S') #Convierto formato Fecha
         
         timeunix1 = mktime(inicial_date.timetuple()) #convierto formato Unix
         newfecha.append(timeunix1)
         
         fecha =datetime.now().strftime('%Y-%m-%d %H:%M:%S') #Fecha y hora actual
         fecha = datetime.strptime(fecha,'%Y-%m-%d %H:%M:%S')
-        
+        print fecha
         timeunix2 = mktime(fecha.timetuple())
         newfecha.append(timeunix2)
         return newfecha
