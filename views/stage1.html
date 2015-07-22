@@ -26,7 +26,7 @@
     %end
 %col = 2 + (len(namezone))*2
 
-%include('base2.html')
+%include('base3.html')
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -51,7 +51,6 @@
         background-color: #E3F6CE  ; 
         
     }
-    
 </style>
     <script> 
         function abrir(url) { 
@@ -99,11 +98,7 @@ function mostrarFormulario(id)
         <div class="panel-body" >
         <div style="display:inline">    
             <span style="display:inline">
-            <form action="/resultado/update/{{stage_id}}" method="post" style="display:inline">
-                <i><input class="boton" type="submit" value="Update Now" onclick="mostrarFormulario('capa2')"></i> 
-            </form>
             
-            <input type="checkbox" name="acepto" id ="acepto" onClick="redireccionar()"><label for="acepto"><i>  (The page will update every TEN minutes)</i></label>
         </div>
         </span>
                 <div style="display:none" id="capa2">
@@ -112,19 +107,7 @@ function mostrarFormulario(id)
             </div>
         </div>
         
-         <div class="panel panel-default" style="text-align:center">
-            <div class="panel-heading">
-          
-        %for j in range(1,count + 1):   
-
-            <form style="display:inline" action="/resultado/{{j}}" method="post">
-                <input class="boton" id="capa1" type="submit" value="Stage {{j}}" onclick="mostrarFormulario('capa2')"></strong>
-             </form>  
-        %end
-
-       
-          </div> 
-        </div> 
+         
           
           <div style="text-align:center;"><h3><b>Stage {{stage_id}} </b></h3></div>
             <table BORDER=1 RULES=COLS FRAME=VSIDES>
@@ -159,7 +142,7 @@ function mostrarFormulario(id)
                         </a>
                     </td>
                 
-                <td><FONT SIZE=1 ><center>{{vehicle[q]}}</p></td>
+                <td><FONT SIZE=1><center>{{vehicle[q]}}</p></td>
                 <td><FONT SIZE=1><center>{{starttime[q]}}</p></td>
                 %for k in range(len(namezone)):
                     % t = (q*len(namezone))+ k
@@ -170,7 +153,7 @@ function mostrarFormulario(id)
                        
                     %else:
             
-                        <td><FONT SIZE=1><center><b>{{resulttime[t]}}</b></center></FONT></p></td>
+                        <td ><FONT SIZE=1><center><b>{{resulttime[t]}}</b></center></FONT></p></td>
                         <td ><FONT SIZE=1><center><b>{{resultzone[t]}}</b></center></FONT></p></td>
 
                     % end
@@ -180,7 +163,7 @@ function mostrarFormulario(id)
             </tr>
         </tbody>
     </table>
-    <a href="/result/deletall">Delete All Data</a>
+   
     
 </body>
 </html>

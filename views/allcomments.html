@@ -51,7 +51,9 @@
         <td align="center">{{item.comment}}</td>
         <td align="center">
         %for i in item.labels.split(","):
-        <img src="/static/labels/{{i}}.png" width="30px" height="32px">
+            %if i != "":
+                <img src="/static/labels/{{i}}.png" width="30px" height="32px">
+            %end
         %end
         </td>
         <td align="center"><small><a href="/allcomments/delete/{{item.id}}">Delete comment</a></td>
@@ -66,12 +68,14 @@
 </br>
 <div class="divDesc">
             <img src="/static/labels/1.png" width="40px" height="42px"> Helicoptero
-            <img src="/static/labels/4.png" width="40px" height="42px"> Grúa
+            &nbsp;<img src="/static/labels/4.png" width="40px" height="42px"> Grúa
         </br>
             <img src="/static/labels/2.png" width="40px" height="42px"> Ambulancia
             <img src="/static/labels/5.png" width="40px" height="42px"> Médico
         </br>
             <img src="/static/labels/3.png" width="40px" height="42px"> Mecanico
+            &nbsp;&nbsp;&nbsp;<img src="/static/labels/6.png" width="40px" height="42px"> Iritrack
+
 </div>
 </div>
 

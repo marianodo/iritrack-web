@@ -114,6 +114,12 @@ def searchData(db):
     
 @app.route('/result/deletall')
 def deleteall(db):
+    current_date = date.today() #Fecha de hoy
+    current_date=str(current_date) #convierto en string
+    inicial_date = current_date + ' 00:00:00' #Le agrego la hora 00
+    inicial_date = datetime.strptime(inicial_date,'%Y-%m-%d %H:%M:%S') #Convierto formato Fecha
+    db.query(LastUpdate).filter(LastUpdate.id == 1).update({'time': inicial_date})
+    db.commit()
     db.query(Data).delete()
     redirect('/resultado/1')
 
@@ -144,3 +150,71 @@ def updateData(db,stage_id):
     db.query(LastUpdate).filter(LastUpdate.id == 1).update({'time': timeSearch})
     db.commit()
     redirect('/resultado/%s'% stage_id)
+
+@app.route('/rallyDakar2015/paraguay/stage1')
+
+def index(db):
+    stage_id = 1
+    drivers=db.query(StartTime.driver_group,StartTime.start_time).filter(StartTime.stage_id==stage_id).all() #Busco todos los driver_id que se generaron por el excel largadas.xls
+    zones = db.query(Stage.zone).filter(Stage.stage_id==stage_id).all() #cambiar el stage_id cuando cambie de etapa
+    start_times = drivers
+
+    try:
+        last_update = db.query(LastUpdate.time).filter(LastUpdate.id =="1").one() #Me trae la ultima fecha de actualizacion
+    except:
+        last_update= " "
+
+    vector_driver = []
+    vector_zone = []
+    vector_time = []
+    
+    tiemporsultado = []
+    zonaresultado = []
+    tiempolastresultado = []
+    zonalastresultado = []
+    vector_start_time = []
+    myArray = []
+    starttimedr = []
+    for start_time in start_times:
+        vector_start_time.append(start_time.start_time)
+    
+    for zone in zones:    
+        vector_zone.append(zone.zone)
+        timename = "time" + zone.zone
+
+    #con esto logre tener en vectores los alpha,drivers y las zonas dependiendo de la etapa    
+    for i,driver in enumerate(drivers):
+        
+        vector_driver.append(driver.driver_group)
+        #Agarra un alpha y pregunta por todas las zonas, sig alpha y pregunta de vuelta por todas las zonas
+        vehicle_num = driver.driver_group
+
+        start_time_tmp = datetime.strptime(vector_start_time[i], '%H:%M:%S') #Convierto en datetime para poder restar dsp
+        vector_time.append(vector_start_time[i])
+
+        for zone in zones:
+            
+                date_per_zones = db.query(Data.date).filter(Data.vehicle==vehicle_num, Data.zone==zone.zone).first() #Busco la hora por la que paso en la zona, si no esta, salta un except
+                if date_per_zones == None: #Si me da none es porque no paso por esa zona
+                    tiemporsultado.append(' ')
+                    zonaresultado.append(' ')
+                else:
+                    date_per_zone=str(date_per_zones[0]).split("'")
+                    date_per_zone = datetime.strptime(date_per_zone[0], '%Y-%m-%d %H:%M:%S')
+                    hora_zona = str(date_per_zone.hour)
+                    minuto_zona = str(date_per_zone.minute)
+                    segundo_zona = str(date_per_zone.second)
+                    if len(hora_zona) == 1:
+                        hora_zona= "0" + hora_zona
+                    if len(minuto_zona) == 1:
+                        minuto_zona= "0" + minuto_zona
+                    if len(segundo_zona) == 1:
+                        segundo_zona= "0" + segundo_zona
+                    date_zone = hora_zona + ":" + minuto_zona + ":" + segundo_zona    
+                    result = date_per_zone - start_time_tmp
+                    result =  str(result).split(",")
+                    tiemporsultado.append(date_zone)
+                    zonaresultado.append(result[1])
+            
+    count = db.query(Stage.stage_id).distinct().count()    
+    return template('stage1.html', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timeresult=tiemporsultado,startime=vector_time, stage_id=stage_id,count=count)
