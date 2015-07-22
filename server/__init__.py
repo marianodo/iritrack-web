@@ -4,9 +4,13 @@ from bottle import Bottle, TEMPLATE_PATH
 from bottle.ext import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from bottle_login import LoginPlugin
 
 app = Bottle()
 
+app.config['SECRET_KEY'] = 'secret'
+
+login = app.install(LoginPlugin())
 # TEMPLATE_PATH.append("./server/views/")
 # TEMPLATE_PATH.remove("./views/")
 

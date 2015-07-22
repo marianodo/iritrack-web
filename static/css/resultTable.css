@@ -13,13 +13,14 @@ h1{
 }
 
 .container{
-  width:95%;
+  width:98%;
   margin:auto;
 }
 
 table{
   border-collapse:collapse;
   width:100%;
+  vertical-align:bottom;
 
 }
 
@@ -37,25 +38,31 @@ table{
 
 .purple thead{
   background:#9B59B6;
+  vertical-align:bottom;
 }
 
 thead{
   color:white;
+  vertical-align:bottom;
 
 }
 
 th,td{
   text-align:center;
-  padding:5px 0;
+  padding:8px 2;
+  vertical-align:bottom;
+  
 }
 
 tbody tr:nth-child(even){
   background:#ECF0F1;
+  vertical-align:bottom;
 }
 
 tbody tr:hover{
 background:#BDC3C7;
   color:#FFFFFF;
+  vertical-align:bottom;
 }
 
 .fixed{
