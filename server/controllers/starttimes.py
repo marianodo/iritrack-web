@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup as bs
 
 cj = CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+
 
 
 @app.post('/starttimes/<stage_id>')
@@ -97,9 +97,9 @@ def update_edit_driver(db):
 	redirect('/starttimes/1')
 	
 
-@app.route('/starttimes/deletall')
-def deleteall(db):
-	db.query(StartTime).delete()
+@app.route('/starttimes/deletall/<stage_id>')
+def deleteall(db,stage_id):
+	db.query(StartTime).filter(StartTime.stage_id == stage_id).delete()
 
 	redirect('/starttimes/1')
 
@@ -109,7 +109,7 @@ def uploadWeb(db):
 	addtime = request.forms.get('addtime')
 	url = request.forms.get('url')
 	codigoHTML = opener.open (url).read()
-	soap = bs(codigoHTML)       # Paso el código HTML a BeautifulSoap
+	soap = bs(urllib2.urlopen(url))       # Paso el código HTML a BeautifulSoap
 	tabla = soap.find('table')
 	trs = tabla.findAll('tr')
 	for tr in trs:

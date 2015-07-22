@@ -16,6 +16,7 @@ class Data(Base):
     event = Column(String(50))
     zone = Column(String(50))
     vehicle = Column(String(50))
+    stage = Column(Integer)
 
     def __init__(self, date=None, lat=None, lon=None):
         self.date = date

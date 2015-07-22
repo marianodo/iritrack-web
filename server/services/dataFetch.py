@@ -47,7 +47,8 @@ class dataFetch(object):
             data.event = r['event']
             data.zone = r['zone']
             data.vehicle = vehicle
-            session.add(data)
+            if data.zone != "":
+                session.add(data)
         session.commit()
         
     def login(self):
@@ -134,7 +135,6 @@ class dataFetch(object):
                 rows = self.parseXls(xlsFileObject)
                 print vehiculo
                 session.query(Data).filter(Data.vehicle == vehiculo,Data.date.like(findDate)).delete(synchronize_session=False)
-                
                 self.insertRows(rows, vehiculo)        
             except:
                 pass

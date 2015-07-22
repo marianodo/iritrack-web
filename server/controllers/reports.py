@@ -53,7 +53,7 @@ def index(db,stage_id):
 
         for zone in zones:
             
-                date_per_zones = db.query(Data.date).filter(Data.vehicle==vehicle_num, Data.zone==zone.zone).first() #Busco la hora por la que paso en la zona, si no esta, salta un except
+                date_per_zones = db.query(Data.date).filter(Data.vehicle==vehicle_num, Data.zone==zone.zone, Data.stage == stage_id).first() #Busco la hora por la que paso en la zona, si no esta, salta un except
                 if date_per_zones == None: #Si me da none es porque no paso por esa zona
                     tiemporsultado.append(' ')
                     zonaresultado.append(' ')
@@ -151,10 +151,10 @@ def updateData(db,stage_id):
     db.commit()
     redirect('/resultado/%s'% stage_id)
 
-@app.route('/rallyDakar2015/paraguay/stage1')
+@app.route('/rallyDakar2015/paraguay/stage2')
 
 def index(db):
-    stage_id = 1
+    stage_id = 2
     drivers=db.query(StartTime.driver_group,StartTime.start_time).filter(StartTime.stage_id==stage_id).all() #Busco todos los driver_id que se generaron por el excel largadas.xls
     zones = db.query(Stage.zone).filter(Stage.stage_id==stage_id).all() #cambiar el stage_id cuando cambie de etapa
     start_times = drivers
@@ -217,4 +217,4 @@ def index(db):
                     zonaresultado.append(result[1])
             
     count = db.query(Stage.stage_id).distinct().count()    
-    return template('stage1.html', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timeresult=tiemporsultado,startime=vector_time, stage_id=stage_id,count=count)
+    return template('stage2.html', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timeresult=tiemporsultado,startime=vector_time, stage_id=stage_id,count=count)
