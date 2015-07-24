@@ -36,7 +36,7 @@ class dataFetch(object):
         rows = xlsParser(xlsFileObject, headers=headers).toDictArray()
         return rows
 
-    def insertRows(self,rows, vehicle):
+    def insertRows(self,rows, vehicle,stageId):
        
         #headers = rows[0].keys()
         for r in rows:
@@ -47,6 +47,7 @@ class dataFetch(object):
             data.event = r['event']
             data.zone = r['zone']
             data.vehicle = vehicle
+            data.stage = stageId
             if data.zone != "":
                 session.add(data)
         session.commit()
@@ -135,7 +136,7 @@ class dataFetch(object):
                 rows = self.parseXls(xlsFileObject)
                 print vehiculo
                 session.query(Data).filter(Data.vehicle == vehiculo,Data.date.like(findDate)).delete(synchronize_session=False)
-                self.insertRows(rows, vehiculo)        
+                self.insertRows(rows, vehiculo,stageId)        
             except:
                 pass
         return True

@@ -1,41 +1,49 @@
-%include('base.html')
+%include('base3.html')
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edit Driver {{driver}}</title>
+	<script language="Javascript">
+    function setdatenow() {
+		
+		var f = new Date();
+    	var datee = (f.getFullYear() + "/" + (f.getMonth() +1) + "/" + f.getDate());
+    	$("#setDate").val(datee);
+	}
+	</script>
+	<style type="text/css">
+	 .divPrincipal
+    {
+		text-align:center; 
+		margin-top: 10%;
+      margin-left: 20%;
+      height: 45%;
+      width: 60%;
+      border:solid 1px;
+      border-radius:10px;
 
-<form action="/reports/update" method="post">
-	<table>
-		<tr>
-			<td>
-				<label for="name">Driver Id
-					<input name="driverid" type="text" value="{{drivers.driver_group}}">
-				</label>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="name">Name
-					<input name="name" type="text" value="{{drivers.name}}">
-				</label>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="name">Start Time
-					<input name="startime" type="text" value="{{drivers.start_time}}">
-				</label>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="name">Stage
-					<input name="stage" type="text" value="{{drivers.stage_id}}">
-				</label>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<button type="submit">Edit </button>
-			</td>
-		</tr>
-</form>
+    } 
+    </style>
+</head>
+<body onload="setdatenow()">
+	<form action="/reports/updateDriver/{{stage}}/{{driver}}" method="post">
+		<div class="divPrincipal"> 	
+			<i><h3>Driver {{driver}} from Stage {{stage}}</h3></i> </br>
+			<SELECT NAME="selZone" SIZE=1> 
+				%for zone in zones:
+					<OPTION VALUE="{{zone.zone}}">{{zone.zone}}</OPTION>
+				%end
+			</SELECT>
+
+			<input size ="15" name="selDate" type="text" placeholder="YYYY-MM-DD">
+			<input size ="15" name="selTime" type="text" placeholder="HH:MM:SS"></br></br>
+			<input type="submit" value="Edit">
+		</div>
+	</form>
+
+
+</body>
+</html>
 
 
     

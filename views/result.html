@@ -58,6 +58,7 @@
         window.open(url,'','top=100,left=300,width=800,height=440') ; 
         } 
     </script> 
+
     <script language="Javascript">  
         function mostrar(nombreCapa){  
         document.getElementById(nombreCapa).style.visibility="visible";  
@@ -137,6 +138,7 @@ function mostrarFormulario(id)
             %for j in zonename:
                 <th bgcolor="#585858" colspan="2"><FONT COLOR=WHITE SIZE=2><center><b> Stage {{j}}</b></th>
             %end
+            <th bgcolor="#585858"><FONT COLOR=WHITE SIZE=2><center><b>Edit</b></th>
         </tr>
 
         <tr>
@@ -147,6 +149,7 @@ function mostrarFormulario(id)
                 <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1><center>Arrive</th>
                 <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1><center>Diff</th>
             %end
+            <th bgcolor="#6E6E6E"><FONT COLOR=WHITE SIZE=1>#</th>
         </tr>
         </thead>
         
@@ -175,8 +178,9 @@ function mostrarFormulario(id)
 
                     % end
                 %end
+                <td align="center"><a href="/result/editResult/{{stage_id}}/{{vehicle[q]}}">Edit</a>
         %end
-
+            
             </tr>
         </tbody>
     </table>

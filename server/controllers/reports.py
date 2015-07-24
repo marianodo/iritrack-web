@@ -194,7 +194,7 @@ def index(db):
 
         for zone in zones:
             
-                date_per_zones = db.query(Data.date).filter(Data.vehicle==vehicle_num, Data.zone==zone.zone).first() #Busco la hora por la que paso en la zona, si no esta, salta un except
+                date_per_zones = db.query(Data.date).filter(Data.vehicle==vehicle_num, Data.zone==zone.zone,Data.stage == stage_id).first() #Busco la hora por la que paso en la zona, si no esta, salta un except
                 if date_per_zones == None: #Si me da none es porque no paso por esa zona
                     tiemporsultado.append(' ')
                     zonaresultado.append(' ')
@@ -218,3 +218,32 @@ def index(db):
             
     count = db.query(Stage.stage_id).distinct().count()    
     return template('stage2.html', vehiculo=vector_driver, fecha=last_update[0],zonename = vector_zone,  zoneresult=zonaresultado,timeresult=tiemporsultado,startime=vector_time, stage_id=stage_id,count=count)
+
+@app.route('/result/editResult/<stageId>/<driver>')
+def index(db,stageId,driver):
+    zones = db.query(Stage.zone).filter(Stage.stage_id==stageId).all()
+    return template('editResult.html',driver = driver,zones=zones, stage = stageId)
+
+@app.post('/reports/updateDriver/<stageId>/<driver>')
+def updateDriver(db,stageId,driver):
+    
+    zone = request.forms.get('selZone')
+    date = request.forms.get('selDate')
+    time = request.forms.get('selTime')
+    dateTime = date + " " + time
+    dateTime.replace("/","-")
+    try:
+        a = db.query(Data).filter(Data.vehicle == driver, Data.zone == zone, Data.stage == stageId).one()
+        db.query(Data).filter(Data.vehicle == driver, Data.zone == zone, Data.stage == stageId).update({'date': dateTime})
+        db.commit()
+    except:
+        data = Data(date=dateTime, lat=" ", lon=" ")
+        data.alpha = ""
+        data.speed = ""
+        data.altitude = ""
+        data.event = ""
+        data.zone = zone
+        data.vehicle = driver
+        data.stage = stageId   
+        db.add(data)
+    redirect('/resultado/%s'% stageId)

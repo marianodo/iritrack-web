@@ -122,10 +122,13 @@ def uploadWeb(db):
 				try:
 					time = td.string.replace('.',':')
 					time = time.replace(' ','')
-					time = "0" + time + ":00"
+					if len(time.split(":")[0]) == 1:
+						time = "0" + time
+					time += ":00" 
 					t = datetime.strptime(time, '%H:%M:%S')
 					timedr = timedelta(hours=t.hour,minutes=t.minute ,seconds=t.second)
 					timedr =timedelta(hours=t.hour,minutes=t.minute + int(addtime) ,seconds=t.second)
+
 					tmpData = str(timedr)
 				except:
 					pass
@@ -136,6 +139,7 @@ def uploadWeb(db):
 				timerun = StartTime(id = int(tmp[0]),driver_group=int(tmp[1]), name=name,start_time= str(tmpData),stage_id=stageId)
 				db.add(timerun)
 		except:
+			print "eerr"
 			pass
 	redirect('/starttimes/1')
 	
