@@ -231,7 +231,6 @@ def updateDriver(db,stageId,driver):
     date = request.forms.get('selDate')
     time = request.forms.get('selTime')
     dateTime = date + " " + time
-    dateTime.replace("/","-")
     try:
         a = db.query(Data).filter(Data.vehicle == driver, Data.zone == zone, Data.stage == stageId).one()
         db.query(Data).filter(Data.vehicle == driver, Data.zone == zone, Data.stage == stageId).update({'date': dateTime})
